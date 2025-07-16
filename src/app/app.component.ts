@@ -1,12 +1,16 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { SidebarComponent } from './core/layout/sidebar/sidebar.component';
+import { DashboardComponent } from './features/dashboard/dashboard.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  standalone: true,
+  imports: [SidebarComponent, DashboardComponent],
+  template: `
+    <div class="layout">
+      <app-sidebar />
+      <app-dashboard />
+    </div>
+  `,
 })
-export class AppComponent {
-  title = 'smart-home-ui';
-}
+export class AppComponent {}

@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-sidebar-footer',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './sidebar-footer.component.html',
-  styleUrl: './sidebar-footer.component.scss'
+  styleUrl: './sidebar-footer.component.scss',
 })
-export class SidebarFooterComponent {
-
-}
+export class SidebarFooterComponent {}

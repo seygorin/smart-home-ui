@@ -60,7 +60,7 @@ export class CardComponent implements OnInit {
     );
   }
 
-  trackById(index: number, item: CardItem): string {
+  trackById(_index: number, item: CardItem): string {
     return item.label;
   }
 
@@ -84,7 +84,7 @@ export class CardComponent implements OnInit {
         return 'vertical';
       }
       default: {
-        return 'default	';
+        return 'default';
       }
     }
   }

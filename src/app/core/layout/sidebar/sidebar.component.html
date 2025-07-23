@@ -1,7 +1,11 @@
-<div class="sidebar-content">
-  <app-sidebar-header></app-sidebar-header>
+<div class="sidebar-content" [class.collapsed]="isCollapsed">
+  <app-sidebar-header
+    [isCollapsed]="isCollapsed"
+    (toggleSidebar)="toggleSidebar()"
+  ></app-sidebar-header>
   <app-sidebar-menu
+    [class.hidden]="isCollapsed"
     (menuItemClick)="onMenuItemClick($event)"
   ></app-sidebar-menu>
-  <app-sidebar-footer></app-sidebar-footer>
+  <app-sidebar-footer [class.hidden]="isCollapsed"></app-sidebar-footer>
 </div>

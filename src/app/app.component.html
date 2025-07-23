@@ -1,12 +1,23 @@
 <mat-sidenav-container class="layout-container">
-  <mat-sidenav #sidenav [opened]="!isCollapsed" mode="side" class="sidebar">
-    <app-sidebar (tabSelected)="onTabSelected($event)"></app-sidebar>
+  <mat-sidenav
+    #sidenav
+    [opened]="!isMobile"
+    [mode]="isMobile ? 'over' : 'side'"
+    class="sidebar"
+    [class.collapsed]="isCollapsed"
+  >
+    <app-sidebar
+      [isCollapsed]="isCollapsed"
+      (tabSelected)="onTabSelected($event)"
+      (toggleCollapse)="onToggleCollapse()"
+    ></app-sidebar>
   </mat-sidenav>
 
   <mat-sidenav-content>
     <button
       mat-icon-button
       class="toggle-button"
+      [class.visible]="isMobile"
       (click)="onToggleCollapse()"
       aria-label="Toggle sidebar"
     >

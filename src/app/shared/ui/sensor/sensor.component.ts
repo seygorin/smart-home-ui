@@ -13,4 +13,13 @@ import { SensorValuePipe } from '../../pipes/sensor-value.pipe';
 })
 export class SensorComponent {
   @Input() sensor!: Sensor;
+  @Input() layout: 'vertical' | 'horizontal' | 'grid' = 'vertical';
+
+  get isHorizontalLayout(): boolean {
+    return this.layout === 'horizontal';
+  }
+
+  get isVerticalLayout(): boolean {
+    return this.layout === 'vertical' || this.layout === 'grid';
+  }
 }

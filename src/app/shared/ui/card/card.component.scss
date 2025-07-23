@@ -1,16 +1,75 @@
 .card {
-  border: 1px solid #ccc;
-  padding: 16px;
-  margin: 8px;
+  background-color: var(--color-bg-card);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-md);
+  color: var(--color-text-primary);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  min-height: 100px;
+  position: relative;
+  height: calc(100% - 32px);
+  overflow: hidden;
+  margin-bottom: var(--spacing-md);
+
+  .title {
+    font-size: var(--font-size-medium);
+    font-weight: 500;
+    margin-bottom: var(--spacing-md);
+    color: var(--color-text-primary);
+  }
+
+  mat-slide-toggle {
+    position: absolute;
+    top: var(--spacing-md);
+    right: var(--spacing-md);
+  }
+
+  &.status-card {
+    .title {
+      margin-bottom: 0;
+    }
+
+    .status {
+      font-size: 24px;
+      font-weight: 500;
+      margin-top: 8px;
+
+      &.on {
+        color: var(--color-accent);
+      }
+
+      &.off {
+        color: var(--color-text-secondary);
+      }
+    }
+
+    .icon {
+      position: absolute;
+      right: var(--spacing-md);
+      bottom: var(--spacing-md);
+      font-size: 28px;
+      color: var(--color-accent);
+    }
+  }
 }
 
 .single {
+  .items {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
 }
 
 .horizontal {
   .items {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: space-between;
   }
 }
 
@@ -18,5 +77,15 @@
   .items {
     display: flex;
     flex-direction: column;
+    gap: 12px;
+  }
+}
+
+:host ::ng-deep {
+  .mat-mdc-slide-toggle.mat-accent {
+    --mdc-switch-selected-track-color: #1e88e5;
+    --mdc-switch-selected-handle-color: #64b5f6;
+    --mdc-switch-unselected-track-color: #555;
+    --mdc-switch-unselected-handle-color: #888;
   }
 }

@@ -1,14 +1,47 @@
 .device {
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 8px 0;
+  margin-bottom: 4px;
+
+  mat-icon {
+    color: var(--color-text-secondary);
+    font-size: 20px;
+    height: 20px;
+    width: 20px;
+  }
+
+  span {
+    flex-grow: 1;
+    color: var(--color-text-primary);
+    font-size: 14px;
+  }
+
+  &:hover {
+    mat-icon {
+      color: var(--color-accent);
+    }
+  }
 }
 
 .active {
-  color: blue;
+  mat-icon {
+    color: var(--color-accent);
+  }
 }
 
-.highlight {
-  box-shadow: 0 0 10px rgba(0, 0, 255, 0.5);
-  transition: box-shadow 0.3s ease;
+
+:host ::ng-deep {
+  .mat-mdc-slide-toggle {
+    --mdc-switch-selected-track-color: #1e88e5;
+    --mdc-switch-selected-handle-color: #64b5f6;
+    --mdc-switch-unselected-track-color: #555;
+    --mdc-switch-unselected-handle-color: #888;
+    --mdc-switch-selected-focus-state-layer-color: rgba(30, 136, 229, 0.12);
+    --mdc-switch-selected-hover-state-layer-color: rgba(30, 136, 229, 0.04);
+    --mdc-switch-selected-pressed-state-layer-color: rgba(30, 136, 229, 0.1);
+  }
 }

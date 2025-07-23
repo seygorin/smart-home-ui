@@ -1,30 +1,28 @@
 <div class="card" [ngClass]="getLayoutClass()">
   <div class="title">{{ card.title }}</div>
 
+  @if (showGroupToggle) {
   <mat-slide-toggle
-    *ngIf="showGroupToggle"
     [checked]="groupToggleState"
     (change)="onGroupToggleChange($event.checked)"
   >
-    Group Toggle
   </mat-slide-toggle>
+  }
 
   <div class="items">
-    <ng-container *ngFor="let item of localItems; trackBy: trackById">
-      <ng-container [ngSwitch]="item.type">
-        <ng-container *ngSwitchCase="'device'">
-          <app-device
-            *ngIf="isDevice(item)"
-            [device]="item"
-            [isSingle]="card.layout === 'singleDevice'"
-            (stateChanged)="onDeviceStateChange($event)"
-          >
-          </app-device>
-        </ng-container>
-        <ng-container *ngSwitchCase="'sensor'">
-          <app-sensor *ngIf="isSensor(item)" [sensor]="item"> </app-sensor>
-        </ng-container>
-      </ng-container>
-    </ng-container>
+    @for (item of localItems; track trackById(0, item)) { @switch (item.type) {
+    @case ('device') { @if (isDevice(item)) {
+    <app-device
+      [device]="item"
+      [isSingle]="card.layout === 'singleDevice'"
+      (stateChanged)="onDeviceStateChange($event)"
+    >
+    </app-device>
+    } } @case ('sensor') { @if (isSensor(item)) {
+    <app-sensor
+      [sensor]="item"
+      [layout]="card.layout === 'horizontalLayout' ? 'horizontal' : 'vertical'"
+    ></app-sensor>
+    } } } }
   </div>
 </div>

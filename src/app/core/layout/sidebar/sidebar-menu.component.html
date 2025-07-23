@@ -1,9 +1,12 @@
-<mat-nav-list>
+<nav class="sidebar-menu">
+  @for (item of menuItems; track item.id) {
   <a
-    mat-list-item
-    *ngFor="let item of menuItems"
-    (click)="onItemClick(item.id)"
+    class="menu-item"
+    [class.active]="item.id === activeItem"
+    (click)="selectMenuItem(item.id)"
   >
-    {{ item.label }}
+    <mat-icon class="menu-icon">{{ item.icon }}</mat-icon>
+    <span class="menu-label">{{ item.label }}</span>
   </a>
-</mat-nav-list>
+  }
+</nav>

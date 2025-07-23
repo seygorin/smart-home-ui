@@ -8,7 +8,6 @@
   }}</mat-icon>
   <span>{{ device.label }}</span>
   <mat-slide-toggle
-    *ngIf="!isSingle"
     [checked]="device.state"
     (change)="onToggle($event.checked)"
   >

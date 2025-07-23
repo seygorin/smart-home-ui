@@ -1,0 +1,33 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: var(--color-bg-main);
+
+  app-tab-switcher {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  app-card-list {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: var(--spacing-lg);
+  }
+
+  &.tab-transition {
+    app-card-list {
+      animation: fadeIn 0.3s ease-in-out;
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}

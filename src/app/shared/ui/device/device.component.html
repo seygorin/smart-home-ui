@@ -1,4 +1,8 @@
-<div class="device" [class.active]="device.state">
+<div
+  class="device"
+  [class.active]="device.state"
+  [appActiveHighlight]="device.state"
+>
   <mat-icon [color]="getIconColor()" (click)="isSingle ? onToggle() : null">{{
     device.icon
   }}</mat-icon>

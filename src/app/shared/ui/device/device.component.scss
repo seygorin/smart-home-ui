@@ -7,3 +7,8 @@
 .active {
   color: blue;
 }
+
+.highlight {
+  box-shadow: 0 0 10px rgba(0, 0, 255, 0.5);
+  transition: box-shadow 0.3s ease;
+}

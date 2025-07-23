@@ -1,1 +1,7 @@
-<p>sidebar works!</p>
+<div class="sidebar-content">
+  <app-sidebar-header></app-sidebar-header>
+  <app-sidebar-menu
+    (menuItemClick)="onMenuItemClick($event)"
+  ></app-sidebar-menu>
+  <app-sidebar-footer></app-sidebar-footer>
+</div>

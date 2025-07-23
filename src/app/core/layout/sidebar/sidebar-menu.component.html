@@ -1,1 +1,9 @@
-<p>sidebar-menu works!</p>
+<mat-nav-list>
+  <a
+    mat-list-item
+    *ngFor="let item of menuItems"
+    (click)="onItemClick(item.id)"
+  >
+    {{ item.label }}
+  </a>
+</mat-nav-list>

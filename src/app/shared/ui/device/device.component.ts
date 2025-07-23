@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatIconModule } from '@angular/material/icon';
 import { Device } from '../../models/index';
+import { ActiveHighlightDirective } from '../../directives/active-highlight.directive';
 
 @Component({
   selector: 'app-device',
   standalone: true,
-  imports: [CommonModule, MatSlideToggleModule, MatIconModule],
+  imports: [CommonModule, MatSlideToggleModule, MatIconModule, ActiveHighlightDirective],
   templateUrl: './device.component.html',
   styleUrl: './device.component.scss',
 })

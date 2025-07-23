@@ -1,1 +1,12 @@
-<p>device works!</p>
+<div class="device" [class.active]="device.state">
+  <mat-icon [color]="getIconColor()" (click)="isSingle ? onToggle() : null">{{
+    device.icon
+  }}</mat-icon>
+  <span>{{ device.label }}</span>
+  <mat-slide-toggle
+    *ngIf="!isSingle"
+    [checked]="device.state"
+    (change)="onToggle($event.checked)"
+  >
+  </mat-slide-toggle>
+</div>

@@ -1,1 +1,6 @@
-<p>dashboard works!</p>
+<app-tab-switcher
+  [tabs]="tabs"
+  [selectedTabId]="selectedTabId"
+  (tabSelected)="onTabSelected($event)"
+></app-tab-switcher>
+<app-card-list [cards]="selectedCards"></app-card-list>.

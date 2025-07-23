@@ -1,20 +1,30 @@
-import { Component } from '@angular/core';
+
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { MatTabsModule } from '@angular/material/tabs';
-import { CardListComponent } from '../../../shared/ui/card-list/card-list.component';
+import { Tab } from '../../../shared/models/index';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-tab-switcher',
   standalone: true,
-  imports: [MatTabsModule, CardListComponent],
-  template: `
-    <mat-tab-group>
-      <mat-tab label="Overview">
-        <app-card-list />
-      </mat-tab>
-      <mat-tab label="Lights">
-        <app-card-list />
-      </mat-tab>
-    </mat-tab-group>
-  `,
+  imports: [CommonModule, MatTabsModule],
+  templateUrl: './tab-switcher.component.html',
+  styleUrl: './tab-switcher.component.scss',
 })
-export class TabSwitcherComponent {}
+export class TabSwitcherComponent {
+  @Input() tabs: Tab[] = [];
+  @Input() selectedTabId = '';
+  @Output() tabSelected = new EventEmitter<string>();
+
+  getSelectedIndex(): number {
+    return this.tabs.findIndex((tab) => tab.id === this.selectedTabId);
+  }
+
+  onTabChange(event: MatTabChangeEvent): void {
+    const selectedTab = this.tabs[event.index];
+    if (selectedTab) {
+      this.tabSelected.emit(selectedTab.id);
+    }
+  }
+}

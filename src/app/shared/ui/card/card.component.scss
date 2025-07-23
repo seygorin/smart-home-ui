@@ -1,0 +1,22 @@
+.card {
+  border: 1px solid #ccc;
+  padding: 16px;
+  margin: 8px;
+}
+
+.single {
+}
+
+.horizontal {
+  .items {
+    display: flex;
+    flex-direction: row;
+  }
+}
+
+.vertical {
+  .items {
+    display: flex;
+    flex-direction: column;
+  }
+}

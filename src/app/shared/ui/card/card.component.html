@@ -1,1 +1,30 @@
-<p>card works!</p>
+<div class="card" [ngClass]="getLayoutClass()">
+  <div class="title">{{ card.title }}</div>
+
+  <mat-slide-toggle
+    *ngIf="showGroupToggle"
+    [checked]="groupToggleState"
+    (change)="onGroupToggleChange($event.checked)"
+  >
+    Group Toggle
+  </mat-slide-toggle>
+
+  <div class="items">
+    <ng-container *ngFor="let item of localItems; trackBy: trackById">
+      <ng-container [ngSwitch]="item.type">
+        <ng-container *ngSwitchCase="'device'">
+          <app-device
+            *ngIf="isDevice(item)"
+            [device]="item"
+            [isSingle]="card.layout === 'singleDevice'"
+            (stateChanged)="onDeviceStateChange($event)"
+          >
+          </app-device>
+        </ng-container>
+        <ng-container *ngSwitchCase="'sensor'">
+          <app-sensor *ngIf="isSensor(item)" [sensor]="item"> </app-sensor>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+  </div>
+</div>

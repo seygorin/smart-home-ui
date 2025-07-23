@@ -1,25 +1,34 @@
-export interface Device {
+export interface SensorValue {
+  amount: number;
+  unit: string;
+}
+
+export interface CardItemBase {
   icon: string;
   label: string;
+}
+
+export interface Sensor extends CardItemBase {
+  type: 'sensor';
+  value: SensorValue;
+}
+
+export interface Device extends CardItemBase {
+  type: 'device';
   state: boolean;
 }
 
-export interface Sensor {
-  icon: string;
-  label: string;
-  value: {
-    amount: number;
-    unit: string;
-  };
-}
-
-export type CardItem = Device | Sensor;
-
-export type CardLayout = 'single' | 'horizontal' | 'vertical';
+export type CardItem = Sensor | Device;
 
 export interface Card {
   id: string;
   title: string;
-  layout: CardLayout;
+  layout: 'singleDevice' | 'horizontalLayout' | 'verticalLayout';
   items: CardItem[];
+}
+
+export interface Tab {
+  id: string;
+  title: string;
+  cards: Card[];
 }

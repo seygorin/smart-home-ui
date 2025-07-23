@@ -1,1 +1,6 @@
-<p>tab-switcher works!</p>
+<mat-tab-group
+  [selectedIndex]="getSelectedIndex()"
+  (selectedTabChange)="onTabChange($event)"
+>
+  <mat-tab *ngFor="let tab of tabs" [label]="tab.title"> </mat-tab>
+</mat-tab-group>

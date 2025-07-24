@@ -4,8 +4,8 @@
     (toggleSidebar)="toggleSidebar()"
   ></app-sidebar-header>
   <app-sidebar-menu
-    [class.hidden]="isCollapsed"
+    [isCollapsed]="isCollapsed"
     (menuItemClick)="onMenuItemClick($event)"
   ></app-sidebar-menu>
-  <app-sidebar-footer [class.hidden]="isCollapsed"></app-sidebar-footer>
+  <app-sidebar-footer [isCollapsed]="isCollapsed"></app-sidebar-footer>
 </div>

@@ -13,6 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 export class SidebarMenuComponent {
   @Output() menuItemClick = new EventEmitter<string>();
   @Input() activeItem = 'overview';
+  @Input() isCollapsed = false;
 
   menuItems = [
     { id: 'overview', label: 'Overview', icon: 'dashboard' },

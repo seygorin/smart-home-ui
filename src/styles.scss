@@ -1,20 +1,16 @@
-// Import shared styles
 @use "./app/shared/styles/base" as base;
 @use "./app/shared/styles/material-mixins" as mat;
 @use "./app/shared/styles/theme-variables" as theme;
 @use "./app/shared/styles/layout-mixins" as layout;
 
-// Apply theme variables
 @include theme.define-theme-variables;
 
-// Apply base styles
 @include base.base-reset;
 
 body {
   @include base.base-body;
 }
 
-// Material component theming
 .mat-mdc-card {
   @include mat.mat-card-theme;
 }
@@ -56,7 +52,6 @@ body {
   @include mat.mat-icon-theme;
 }
 
-// Common utility classes
 .flex-row {
   @include layout.flex-row;
 }
@@ -90,7 +85,6 @@ body {
   @include base.highlight-effect;
 }
 
-// Responsive adjustments
 @include base.responsive-adjustments;
 
 @media (max-width: 768px) {

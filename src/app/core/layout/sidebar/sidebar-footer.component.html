@@ -1,6 +1,11 @@
-<div class="sidebar-footer">
+<div class="sidebar-footer" [class.collapsed]="isCollapsed">
   <div class="avatar">
     <span>RS</span>
   </div>
-  <div class="footer-text">RS School. Angular</div>
+  <div class="footer-content" [class.hidden]="isCollapsed">
+    <div class="footer-text">RS School. Angular</div>
+    <a href="https://github.com/seygorin" target="_blank" class="github-link">
+      <span>by seygorin</span>
+    </a>
+  </div>
 </div>

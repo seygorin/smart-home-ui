@@ -4,6 +4,7 @@ import {
   HostListener,
   Input,
   Renderer2,
+  inject,
 } from '@angular/core';
 
 @Directive({
@@ -13,7 +14,8 @@ import {
 export class ActiveHighlightDirective {
   @Input() appActiveHighlight = false;
 
-  constructor(private element: ElementRef, private renderer: Renderer2) {}
+  private element = inject(ElementRef);
+  private renderer = inject(Renderer2);
 
   @HostListener('mouseenter') onMouseEnter() {
     if (this.appActiveHighlight) {

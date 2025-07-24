@@ -1,10 +1,29 @@
+@use "../app/shared/styles/forward" as *;
+
 .layout-container {
   height: 100vh;
+  width: 100vw;
   background-color: var(--color-bg-main);
+  overflow: hidden;
+  position: relative;
 
   &.mat-drawer-container {
     &.mat-drawer-transition .mat-drawer-content {
-      transition: margin 0.3s ease;
+      transition: margin-left var(--transition-normal);
+    }
+  }
+
+  .mat-drawer-content {
+    margin-left: 250px;
+    width: calc(100vw - 250px);
+    transition: margin-left var(--transition-normal),
+      width var(--transition-normal);
+  }
+
+  &.sidebar-collapsed {
+    .mat-drawer-content {
+      margin-left: 64px !important;
+      width: calc(100vw - 64px) !important;
     }
   }
 }
@@ -14,7 +33,8 @@
   background-color: var(--color-bg-sidebar);
   border-right: 1px solid var(--color-border);
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
-  transition: width 0.3s ease;
+  transition: width var(--transition-normal);
+  z-index: 100;
 
   &.collapsed {
     width: 64px !important;
@@ -24,37 +44,67 @@
   }
 }
 
-.toggle-button {
-  position: fixed;
-  top: 16px;
-  left: 16px;
+.main-content {
+  @include flex-column;
+  padding: 0;
+  overflow: hidden;
+  background-color: var(--color-bg-main);
+  position: relative;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+.dashboard-container {
+  flex: 1;
+  overflow: hidden;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.mobile-toggle-button {
+  position: absolute;
+  top: var(--spacing-sm);
+  right: var(--spacing-sm);
   z-index: 1000;
   color: var(--color-text-primary);
-  background-color: rgba(26, 26, 26, 0.7);
+  background-color: transparent;
   border: none;
+  transition: all var(--transition-fast);
   display: none;
-  border-radius: 4px;
-  padding: 8px;
-}
 
-mat-sidenav-content {
-  padding: 0;
-  overflow-x: hidden;
-  background-color: var(--color-bg-main);
-  transition: margin-left 0.3s ease;
-}
-.toggle-button.visible {
-  display: block;
-}
-
-@media (max-width: 768px) {
-  .toggle-button {
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: scale(1.05);
   }
-  mat-sidenav {
-    mode: over;
+
+  &.visible {
+    display: flex;
+  }
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@media (max-width: 767px) {
+  .sidebar {
+    width: 100%; 
+  }
+
+  .layout-container {
+    .mat-drawer-content {
+      margin-left: 0 !important;
+      width: 100vw !important;
+    }
+
+    &.sidebar-collapsed {
+      .mat-drawer-content {
+        margin-left: 0 !important;
+        width: 100vw !important;
+      }
+    }
   }
 }

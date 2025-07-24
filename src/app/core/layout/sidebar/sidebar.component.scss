@@ -1,37 +1,35 @@
+@use "../../../shared/styles/forward" as *;
+
 .sidebar-content {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+  @include flex-column;
+  height: 100vh;
   background-color: var(--color-bg-sidebar);
-  color: white;
+  color: var(--color-text-primary);
   width: 100%;
-  transition: all 0.3s ease;
+  transition: all var(--transition-normal);
+  overflow: hidden;
 
   app-sidebar-header {
     flex-shrink: 0;
+    border-bottom: 1px solid var(--color-border);
   }
 
   app-sidebar-menu {
     flex: 1;
     overflow-y: auto;
-    transition: opacity 0.3s ease;
-
-    &.hidden {
-      opacity: 0;
-      height: 0;
-      overflow: hidden;
-    }
+    overflow-x: hidden;
+    transition: all var(--transition-normal);
   }
 
   app-sidebar-footer {
     flex-shrink: 0;
     border-top: 1px solid var(--color-border);
-    transition: opacity 0.3s ease;
+    transition: all var(--transition-normal);
+  }
+}
 
-    &.hidden {
-      opacity: 0;
-      height: 0;
-      overflow: hidden;
-    }
+@media (max-width: 767px) {
+  .sidebar-content {
+    width: 100%;
   }
 }

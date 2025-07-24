@@ -1,12 +1,16 @@
-<nav class="sidebar-menu">
+<nav class="sidebar-menu" [class.collapsed]="isCollapsed">
   @for (item of menuItems; track item.id) {
   <a
     class="menu-item"
     [class.active]="item.id === activeItem"
+    [class.collapsed]="isCollapsed"
     (click)="selectMenuItem(item.id)"
+    [title]="isCollapsed ? item.label : ''"
   >
     <mat-icon class="menu-icon">{{ item.icon }}</mat-icon>
-    <span class="menu-label">{{ item.label }}</span>
+    <span class="menu-label" [class.hidden]="isCollapsed">{{
+      item.label
+    }}</span>
   </a>
   }
 </nav>

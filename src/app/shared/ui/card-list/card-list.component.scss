@@ -1,17 +1,22 @@
+@use "../../styles/forward" as *;
+
 :host {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: var(--spacing-md);
-  padding: var(--spacing-md);
+  @include grid-layout(
+    repeat(auto-fill, minmax(280px, 1fr)),
+    var(--spacing-md)
+  );
+  padding: 0;
+  width: 100%;
   max-width: 100%;
   overflow-x: hidden;
   background-color: var(--color-bg-main);
-  min-height: calc(
-    100vh - 104px
-  );
+  min-height: 100%;
+  box-sizing: border-box;
 
   app-card {
-    animation: fadeIn 0.3s ease-in-out;
+    animation: fadeIn var(--transition-normal) ease-in-out;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   @keyframes fadeIn {
@@ -26,14 +31,30 @@
   }
 }
 
-@media (min-width: 768px) {
+@media (max-width: 767px) {
   :host {
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
   }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 768px) and (max-width: 1023px) {
+  :host {
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: var(--spacing-md);
+  }
+}
+
+@media (min-width: 1024px) {
+  :host {
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: var(--spacing-lg);
+  }
+}
+
+@media (min-width: 1400px) {
   :host {
     grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: var(--spacing-lg);
   }
 }

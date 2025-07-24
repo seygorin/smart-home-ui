@@ -1,14 +1,10 @@
+@use "../../styles/component-mixins" as comp;
+@use "../../styles/layout-mixins" as layout;
+@use "../../styles/material-mixins" as mat;
+
 .card {
-  background-color: var(--color-bg-card);
-  border-radius: var(--border-radius-md);
-  padding: var(--spacing-md);
-  color: var(--color-text-primary);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-md);
+  @include layout.card-container;
   min-height: 100px;
-  position: relative;
   height: calc(100% - 32px);
   overflow: hidden;
   margin-bottom: var(--spacing-md);
@@ -57,35 +53,19 @@
 
 .single {
   .items {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+    @include layout.flex-column(flex-start, stretch, 12px);
   }
 }
 
 .horizontal {
   .items {
-    display: flex;
-    flex-direction: row;
+    @include layout.flex-row(space-between, center, 16px);
     flex-wrap: wrap;
-    gap: 16px;
-    justify-content: space-between;
   }
 }
 
 .vertical {
   .items {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-}
-
-:host ::ng-deep {
-  .mat-mdc-slide-toggle.mat-accent {
-    --mdc-switch-selected-track-color: #1e88e5;
-    --mdc-switch-selected-handle-color: #64b5f6;
-    --mdc-switch-unselected-track-color: #555;
-    --mdc-switch-unselected-handle-color: #888;
+    @include layout.flex-column(flex-start, stretch, 12px);
   }
 }

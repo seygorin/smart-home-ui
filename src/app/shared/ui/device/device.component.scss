@@ -1,17 +1,15 @@
+@use "../../styles/component-mixins" as comp;
+@use "../../styles/material-mixins" as mat;
+
 .device {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  width: 100%;
-  padding: 8px 0;
+  @include comp.base-component;
+  @include comp.horizontal-layout;
   margin-bottom: 4px;
+  gap: 12px;
 
   mat-icon {
+    @include comp.component-icon(20px);
     color: var(--color-text-secondary);
-    font-size: 20px;
-    height: 20px;
-    width: 20px;
   }
 
   span {
@@ -30,18 +28,5 @@
 .active {
   mat-icon {
     color: var(--color-accent);
-  }
-}
-
-
-:host ::ng-deep {
-  .mat-mdc-slide-toggle {
-    --mdc-switch-selected-track-color: #1e88e5;
-    --mdc-switch-selected-handle-color: #64b5f6;
-    --mdc-switch-unselected-track-color: #555;
-    --mdc-switch-unselected-handle-color: #888;
-    --mdc-switch-selected-focus-state-layer-color: rgba(30, 136, 229, 0.12);
-    --mdc-switch-selected-hover-state-layer-color: rgba(30, 136, 229, 0.04);
-    --mdc-switch-selected-pressed-state-layer-color: rgba(30, 136, 229, 0.1);
   }
 }

@@ -1,0 +1,47 @@
+@forward "./forward";
+@use "./theme-variables" as theme;
+@use "./layout-mixins" as layout;
+@use "./base" as base;
+
+@include theme.define-theme-variables;
+
+.flex-row {
+  @include layout.flex-row;
+}
+
+.flex-column {
+  @include layout.flex-column;
+}
+
+.flex-center {
+  @include layout.flex-row(center, center);
+}
+
+.flex-between {
+  @include layout.flex-row(space-between, center);
+}
+
+.flex-grow {
+  flex-grow: 1;
+}
+
+.card-grid {
+  @include layout.grid-layout;
+  padding: var(--spacing-md);
+}
+
+.container {
+  @include base.container;
+}
+
+.highlight {
+  @include base.highlight-effect;
+}
+
+@include base.responsive-adjustments;
+
+@media (max-width: 768px) {
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}

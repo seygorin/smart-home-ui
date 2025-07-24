@@ -1,39 +1,23 @@
-.sensor {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  padding: 12px;
-  text-align: center;
-  transition: background-color 0.2s ease;
-  border-radius: var(--border-radius-sm);
+@use "../../styles/component-mixins" as comp;
+@use "../../styles/layout-mixins" as layout;
+@use "../../styles/variables" as vars;
 
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.05);
-  }
+.sensor {
+  @include comp.base-component;
+  @include comp.vertical-layout;
 
   mat-icon {
+    @include comp.component-icon(24px);
     color: var(--color-accent);
-    font-size: 24px;
-    height: 24px;
-    width: 24px;
     margin-bottom: 4px;
-    transition: transform 0.2s ease;
   }
 
   span:first-of-type {
-    font-size: 14px;
-    color: var(--color-text-secondary);
+    @include comp.component-label;
   }
 
   span:last-of-type {
-    font-size: 18px;
-    font-weight: 500;
-    color: var(--color-text-primary);
-  }
-
-  &:hover mat-icon {
-    transform: scale(1.1);
+    @include comp.component-value;
   }
 
   &.horizontal {
@@ -41,17 +25,12 @@
     padding: 16px 8px;
 
     .sensor-info {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      @include layout.flex-column(flex-start, center, 10px);
       flex-grow: 1;
-      gap: 10px;
     }
 
     mat-icon {
-      font-size: 28px;
-      height: 28px;
-      width: 28px;
+      @include comp.component-icon(28px);
       margin-bottom: 8px;
     }
 
@@ -61,10 +40,7 @@
   }
 
   &.vertical {
-    flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
-    padding: 8px 0;
+    @include comp.horizontal-layout;
 
     mat-icon {
       margin-bottom: 0;
@@ -78,39 +54,10 @@
 
     span:first-of-type {
       flex-grow: 1;
-			text-align: left;
+      text-align: left;
     }
   }
 }
 
-.temperature mat-icon {
-  color: var(--color-temperature);
-}
-
-.humidity mat-icon {
-  color: var(--color-humidity);
-}
-
-.forecast mat-icon {
-  color: var(--color-forecast);
-}
-
-.occupancy mat-icon {
-  color: var(--color-occupancy);
-}
-
-.power mat-icon {
-  color: var(--color-power);
-}
-
-.voltage mat-icon {
-  color: var(--color-voltage);
-}
-
-.current mat-icon {
-  color: var(--color-current);
-}
-
-.switch mat-icon {
-  color: var(--color-switch);
-}
+// Generate all sensor color classes
+@include vars.generate-sensor-colors;

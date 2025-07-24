@@ -2,15 +2,15 @@
 
 :host {
   @include grid-layout(
-    repeat(auto-fill, minmax(280px, 1fr)),
-    var(--spacing-md)
+    repeat(auto-fit, minmax(280px, max-content)),
+    var(--spacing-md),
+    true
   );
   padding: 0;
   width: 100%;
   max-width: 100%;
   overflow-x: hidden;
   background-color: var(--color-bg-main);
-  min-height: 100%;
   box-sizing: border-box;
 
   app-card {
@@ -40,21 +40,21 @@
 
 @media (min-width: 768px) and (max-width: 1023px) {
   :host {
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: var(--spacing-md);
+    grid-template-columns: repeat(auto-fit, minmax(350px, max-content));
+    gap: var(--spacing-sm);
   }
 }
 
 @media (min-width: 1024px) {
   :host {
-    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-    gap: var(--spacing-lg);
+    grid-template-columns: repeat(auto-fit, minmax(400px, max-content));
+    gap: var(--spacing-sm);
   }
 }
 
 @media (min-width: 1400px) {
   :host {
-    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-    gap: var(--spacing-lg);
+    grid-template-columns: repeat(auto-fit, minmax(450px, max-content));
+    gap: var(--spacing-sm);
   }
 }

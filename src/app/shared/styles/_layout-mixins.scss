@@ -29,12 +29,22 @@
 }
 
 @mixin grid-layout(
-  $columns: repeat(auto-fill, minmax(300px, 1fr)),
-  $gap: var(--spacing-md)
+  $columns: repeat(auto-fit, minmax(300px, max-content)),
+  $gap: var(--spacing-md),
+  $content-based: true
 ) {
   display: grid;
   grid-template-columns: $columns;
   gap: $gap;
+
+  @if $content-based {
+    grid-auto-rows: min-content;
+
+    > * {
+      justify-self: stretch;
+      align-self: start;
+    }
+  }
 }
 
 @mixin responsive-container($padding: var(--spacing-md)) {

@@ -5,9 +5,8 @@
 .card {
   @include layout.card-container;
   min-height: 100px;
-  height: calc(100% - 32px);
+  height: auto;
   overflow: hidden;
-  margin-bottom: var(--spacing-md);
 
   .title {
     font-size: var(--font-size-medium);

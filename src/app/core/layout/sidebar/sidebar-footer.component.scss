@@ -1,9 +1,17 @@
-@use "../../../shared/styles/forward" as *;
+@use '../../../shared/styles/forward' as *;
 
 .sidebar-footer {
   @include flex-row(flex-start, center, 12px);
   padding: var(--spacing-md);
   transition: all var(--transition-normal);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: auto;
+
+  .user-profile,
+  .loading-profile {
+    @include flex-row(flex-start, center, 12px);
+    width: 100%;
+  }
 
   .avatar {
     width: 32px;
@@ -19,12 +27,23 @@
       font-weight: 500;
       color: var(--color-text-primary);
     }
+
+    &.skeleton {
+      background-color: rgba(255, 255, 255, 0.1);
+      animation: pulse 1.5s ease-in-out infinite;
+
+      span {
+        opacity: 0.5;
+      }
+    }
   }
 
-  .footer-content {
+  .user-info {
     @include flex-column(flex-start, flex-start, 4px);
     opacity: 1;
     transition: opacity var(--transition-normal), width var(--transition-normal);
+    min-width: 0;
+    flex: 1;
 
     &.hidden {
       opacity: 0;
@@ -32,27 +51,40 @@
       overflow: hidden;
     }
 
-    .footer-text {
+    .user-name {
       font-size: 12px;
-      color: var(--color-text-secondary);
+      color: var(--color-text-primary);
       white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-weight: 500;
+
+      &.skeleton {
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 4px;
+        height: 14px;
+        width: 80px;
+        animation: pulse 1.5s ease-in-out infinite;
+        color: transparent;
+      }
     }
 
-    .github-link {
+    .logout-button {
       @include flex-row(flex-start, center, 4px);
       color: var(--color-text-secondary);
-      text-decoration: none;
-      font-size: 12px;
+      min-height: auto;
+      line-height: 1;
       transition: color var(--transition-fast);
 
       &:hover {
         color: var(--color-accent);
+        background-color: rgba(255, 255, 255, 0.05);
       }
 
       mat-icon {
-        font-size: 16px;
-        width: 16px;
-        height: 16px;
+        font-size: 14px;
+        width: 14px;
+        height: 14px;
       }
 
       span {
@@ -67,5 +99,20 @@
     .avatar {
       margin-right: 0;
     }
+
+    .user-profile,
+    .loading-profile {
+      justify-content: center;
+    }
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.8;
   }
 }

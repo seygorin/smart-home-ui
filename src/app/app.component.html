@@ -1,43 +1,50 @@
-<mat-sidenav-container
-  class="layout-container"
-  [class.sidebar-collapsed]="isCollapsed && !isMobile"
->
-  <mat-sidenav
-    #sidenav
-    [opened]="sidenavOpened"
-    [mode]="sidenavMode"
-    class="sidebar"
-    [class.collapsed]="isCollapsed && !isMobile"
-    [fixedInViewport]="isMobile"
-    [fixedTopGap]="0"
-    [fixedBottomGap]="0"
-    (closed)="onSidenavClosed()"
-  >
-    <app-sidebar
-      class="sidebar-content"
-      [isCollapsed]="isCollapsed"
-      (tabSelected)="onTabSelected($event)"
-      (toggleCollapse)="onToggleCollapse()"
-    ></app-sidebar>
-  </mat-sidenav>
-
-  <mat-sidenav-content
-    class="main-content"
+<div class="app-layout" *ngIf="isAuthenticated$ | async; else authLayout">
+  <mat-sidenav-container
+    class="layout-container"
     [class.sidebar-collapsed]="isCollapsed && !isMobile"
   >
-    <!-- Mobile toggle button -->
-    <button
-      mat-icon-button
-      class="mobile-toggle-button"
-      [class.visible]="isMobile && isCollapsed"
-      (click)="onToggleCollapse()"
-      aria-label="Open sidebar"
+    <mat-sidenav
+      #sidenav
+      [opened]="sidenavOpened"
+      [mode]="sidenavMode"
+      class="sidebar"
+      [class.collapsed]="isCollapsed && !isMobile"
+      [fixedInViewport]="isMobile"
+      [fixedTopGap]="0"
+      [fixedBottomGap]="0"
+      (closed)="onSidenavClosed()"
     >
-      <mat-icon>{{ isCollapsed ? "menu" : "menu_open" }}</mat-icon>
-    </button>
+      <app-sidebar
+        class="sidebar-content"
+        [isCollapsed]="isCollapsed"
+        (tabSelected)="onTabSelected($event)"
+        (toggleCollapse)="onToggleCollapse()"
+      ></app-sidebar>
+    </mat-sidenav>
 
-    <div class="dashboard-container">
-      <app-dashboard></app-dashboard>
-    </div>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+    <mat-sidenav-content
+      class="main-content"
+      [class.sidebar-collapsed]="isCollapsed && !isMobile"
+    >
+      <button
+        mat-icon-button
+        class="mobile-toggle-button"
+        [class.visible]="isMobile && isCollapsed"
+        (click)="onToggleCollapse()"
+        aria-label="Open sidebar"
+      >
+        <mat-icon>{{ isCollapsed ? 'menu' : 'menu_open' }}</mat-icon>
+      </button>
+
+      <div class="dashboard-container">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
+
+<ng-template #authLayout>
+  <div class="auth-layout">
+    <router-outlet></router-outlet>
+  </div>
+</ng-template>

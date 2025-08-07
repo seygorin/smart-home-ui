@@ -1,0 +1,80 @@
+<div class="login-container">
+  <mat-card class="login-card">
+    <mat-card-header>
+      <mat-card-title>Welcome Home!</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
+        <mat-form-field
+          appearance="outline"
+          class="full-width"
+          [class.mat-form-field-invalid]="hasFieldError('userName')"
+        >
+          <mat-label>Username</mat-label>
+          <input
+            matInput
+            formControlName="userName"
+            type="text"
+            autocomplete="username"
+            [attr.aria-describedby]="
+              hasFieldError('userName') ? 'username-error' : null
+            "
+          />
+          <mat-error *ngIf="hasFieldError('userName')" id="username-error">
+            {{ getFieldErrorMessage('userName') }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field
+          appearance="outline"
+          class="full-width"
+          [class.mat-form-field-invalid]="hasFieldError('password')"
+        >
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            formControlName="password"
+            type="password"
+            autocomplete="current-password"
+            [attr.aria-describedby]="
+              hasFieldError('password') ? 'password-error' : null
+            "
+          />
+          <mat-error *ngIf="hasFieldError('password')" id="password-error">
+            {{ getFieldErrorMessage('password') }}
+          </mat-error>
+        </mat-form-field>
+
+        <div
+          class="auth-error-message"
+          *ngIf="errorMessage"
+          role="alert"
+          aria-live="polite"
+        >
+          {{ errorMessage }}
+        </div>
+
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="isLoading"
+          class="full-width login-button"
+          [attr.aria-label]="isLoading ? 'Logging in...' : 'Login'"
+        >
+          <div class="button-content">
+            <mat-spinner
+              diameter="20"
+              *ngIf="isLoading"
+              aria-hidden="true"
+            ></mat-spinner>
+            <span [class.loading-text]="isLoading">
+              {{ isLoading ? 'Logging in...' : 'Login' }}
+            </span>
+          </div>
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

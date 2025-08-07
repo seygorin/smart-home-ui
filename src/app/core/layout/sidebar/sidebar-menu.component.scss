@@ -1,4 +1,4 @@
-@use "../../../shared/styles/forward" as *;
+@use '../../../shared/styles/forward' as *;
 
 .sidebar-menu {
   padding: var(--spacing-sm) 0;
@@ -52,6 +52,56 @@
         opacity: 0;
         width: 0;
       }
+    }
+  }
+
+  .loading-container {
+    @include flex-row(flex-start, center, 12px);
+    padding: 12px var(--spacing-md);
+    color: var(--color-text-secondary);
+
+    &.collapsed {
+      justify-content: center;
+      padding: 12px;
+
+      .loading-text {
+        display: none;
+      }
+    }
+
+    .loading-text {
+      font-size: 14px;
+      white-space: nowrap;
+    }
+  }
+
+  .empty-state {
+    padding: var(--spacing-md);
+    text-align: center;
+    color: var(--color-text-secondary);
+
+    &.collapsed {
+      padding: 12px;
+
+      .empty-message {
+        display: none;
+      }
+    }
+
+    .empty-icon {
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+      margin-bottom: var(--spacing-xs);
+      opacity: 0.6;
+    }
+
+    .empty-message {
+      font-size: 12px;
+      line-height: 1.4;
+      margin: 0;
+      padding: 0 var(--spacing-xs);
+      opacity: 0.8;
     }
   }
 

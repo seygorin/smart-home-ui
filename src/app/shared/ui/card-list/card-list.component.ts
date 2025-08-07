@@ -1,7 +1,7 @@
-import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { Card } from '../../models/index';
-import { CardComponent } from '../card/card.component';
+import {Component, Input} from '@angular/core'
+import {CommonModule} from '@angular/common'
+import {Card} from '../../models/index'
+import {CardComponent} from '../card/card.component'
 
 @Component({
   selector: 'app-card-list',
@@ -11,5 +11,5 @@ import { CardComponent } from '../card/card.component';
   styleUrl: './card-list.component.scss',
 })
 export class CardListComponent {
-  @Input() cards: Card[] = [];
+  @Input() cards: Card[] = []
 }

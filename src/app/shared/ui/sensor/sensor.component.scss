@@ -1,0 +1,62 @@
+@use "../../styles/component-mixins" as comp;
+@use "../../styles/layout-mixins" as layout;
+@use "../../styles/variables" as vars;
+
+.sensor {
+  @include comp.base-component;
+  @include comp.vertical-layout;
+
+  mat-icon {
+    @include comp.component-icon(24px);
+    color: var(--color-accent);
+    margin-bottom: 4px;
+  }
+
+  span:first-of-type {
+    @include comp.component-label;
+  }
+
+  span:last-of-type {
+    @include comp.component-value;
+  }
+
+  &.horizontal {
+    width: 100%;
+    padding: 16px 8px;
+
+    .sensor-info {
+      @include layout.flex-column(flex-start, center, 10px);
+      flex-grow: 1;
+    }
+
+    mat-icon {
+      @include comp.component-icon(28px);
+      margin-bottom: 8px;
+    }
+
+    span:last-of-type {
+      font-size: 20px;
+    }
+  }
+
+  &.vertical {
+    @include comp.horizontal-layout;
+
+    mat-icon {
+      margin-bottom: 0;
+      margin-right: 12px;
+      flex-shrink: 0;
+    }
+
+    span:last-of-type {
+      align-self: flex-end;
+    }
+
+    span:first-of-type {
+      flex-grow: 1;
+      text-align: left;
+    }
+  }
+}
+
+@include vars.generate-sensor-colors;

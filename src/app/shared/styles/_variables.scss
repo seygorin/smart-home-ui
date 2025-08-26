@@ -1,0 +1,18 @@
+$sensor-colors: (
+  "temperature": var(--color-temperature),
+  "humidity": var(--color-humidity),
+  "forecast": var(--color-forecast),
+  "occupancy": var(--color-occupancy),
+  "power": var(--color-power),
+  "voltage": var(--color-voltage),
+  "current": var(--color-current),
+  "switch": var(--color-switch),
+);
+
+@mixin generate-sensor-colors {
+  @each $name, $color in $sensor-colors {
+    .#{$name} mat-icon {
+      color: $color;
+    }
+  }
+}

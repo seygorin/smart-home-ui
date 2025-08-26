@@ -1,0 +1,57 @@
+@mixin base-component {
+  display: flex;
+  align-items: center;
+  transition: background-color 0.2s ease;
+  border-radius: var(--border-radius-sm);
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+}
+
+@mixin component-icon($size: 24px) {
+  font-size: $size;
+  height: $size;
+  width: $size;
+  transition: transform 0.2s ease;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+@mixin component-label {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+}
+
+@mixin component-value {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+}
+
+@mixin vertical-layout {
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  text-align: center;
+}
+
+@mixin horizontal-layout {
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+  padding: 8px 0;
+}
+
+@mixin mat-toggle-theme {
+  --mdc-switch-selected-track-color: var(--color-accent);
+  --mdc-switch-selected-handle-color: var(--color-accent-light);
+  --mdc-switch-unselected-track-color: #555;
+  --mdc-switch-unselected-handle-color: #888;
+  --mdc-switch-selected-focus-state-layer-color: rgba(30, 136, 229, 0.12);
+  --mdc-switch-selected-hover-state-layer-color: rgba(30, 136, 229, 0.04);
+  --mdc-switch-selected-pressed-state-layer-color: rgba(30, 136, 229, 0.1);
+}

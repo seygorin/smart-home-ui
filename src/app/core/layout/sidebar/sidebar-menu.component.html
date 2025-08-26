@@ -1,0 +1,22 @@
+<nav class="sidebar-menu" [class.collapsed]="isCollapsed">
+  @for (item of menuItems; track item.id) {
+  <a
+    class="menu-item"
+    [class.active]="item.id === activeItem"
+    [class.collapsed]="isCollapsed"
+    (click)="selectMenuItem(item.id)"
+    (keydown.enter)="selectMenuItem(item.id)"
+    (keydown.space)="selectMenuItem(item.id)"
+    [title]="isCollapsed ? item.label : ''"
+    tabindex="0"
+    role="button"
+    [attr.aria-label]="item.label"
+    [attr.aria-pressed]="item.id === activeItem"
+  >
+    <mat-icon class="menu-icon">{{ item.icon }}</mat-icon>
+    <span class="menu-label" [class.hidden]="isCollapsed">{{
+      item.label
+    }}</span>
+  </a>
+  }
+</nav>

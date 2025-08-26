@@ -1,0 +1,28 @@
+<div class="card" [ngClass]="getLayoutClass()">
+  <div class="title">{{ card.title }}</div>
+
+  @if (showGroupToggle) {
+  <mat-slide-toggle
+    [checked]="groupToggleState"
+    (change)="onGroupToggleChange($event.checked)"
+  >
+  </mat-slide-toggle>
+  }
+
+  <div class="items">
+    @for (item of localItems; track trackById(0, item)) { @switch (item.type) {
+    @case ('device') { @if (isDevice(item)) {
+    <app-device
+      [device]="item"
+      [isSingle]="card.layout === 'singleDevice'"
+      (stateChanged)="onDeviceStateChange($event)"
+    >
+    </app-device>
+    } } @case ('sensor') { @if (isSensor(item)) {
+    <app-sensor
+      [sensor]="item"
+      [layout]="card.layout === 'horizontalLayout' ? 'horizontal' : 'vertical'"
+    ></app-sensor>
+    } } } }
+  </div>
+</div>

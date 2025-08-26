@@ -1,0 +1,50 @@
+@use "../../shared/styles/forward" as *;
+
+:host {
+  @include flex-column;
+  height: 100vh;
+  width: 100%;
+  max-width: 100%;
+  background-color: var(--color-bg-main);
+  overflow: hidden;
+  box-sizing: border-box;
+
+  app-tab-switcher {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    flex-shrink: 0;
+    background-color: var(--color-bg-main);
+    border-bottom: 1px solid var(--color-border);
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  app-card-list {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: var(--spacing-md);
+    padding-bottom: var(--spacing-xl);
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  &.tab-transition {
+    app-card-list {
+      animation: fadeIn var(--transition-normal) ease-in-out;
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}

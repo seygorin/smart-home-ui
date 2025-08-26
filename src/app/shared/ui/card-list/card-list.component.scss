@@ -1,0 +1,60 @@
+@use "../../styles/forward" as *;
+
+:host {
+  @include grid-layout(
+    repeat(auto-fit, minmax(280px, max-content)),
+    var(--spacing-md),
+    true
+  );
+  padding: 0;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  background-color: var(--color-bg-main);
+  box-sizing: border-box;
+
+  app-card {
+    animation: fadeIn var(--transition-normal) ease-in-out;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  :host {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-sm);
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  :host {
+    grid-template-columns: repeat(auto-fit, minmax(350px, max-content));
+    gap: var(--spacing-sm);
+  }
+}
+
+@media (min-width: 1024px) {
+  :host {
+    grid-template-columns: repeat(auto-fit, minmax(400px, max-content));
+    gap: var(--spacing-sm);
+  }
+}
+
+@media (min-width: 1400px) {
+  :host {
+    grid-template-columns: repeat(auto-fit, minmax(450px, max-content));
+    gap: var(--spacing-sm);
+  }
+}

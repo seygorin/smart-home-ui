@@ -1,0 +1,32 @@
+@use "../../styles/component-mixins" as comp;
+@use "../../styles/material-mixins" as mat;
+
+.device {
+  @include comp.base-component;
+  @include comp.horizontal-layout;
+  margin-bottom: 4px;
+  gap: 12px;
+
+  mat-icon {
+    @include comp.component-icon(20px);
+    color: var(--color-text-secondary);
+  }
+
+  span {
+    flex-grow: 1;
+    color: var(--color-text-primary);
+    font-size: 14px;
+  }
+
+  &:hover {
+    mat-icon {
+      color: var(--color-accent);
+    }
+  }
+}
+
+.active {
+  mat-icon {
+    color: var(--color-accent);
+  }
+}

@@ -1,0 +1,70 @@
+@use "../../styles/component-mixins" as comp;
+@use "../../styles/layout-mixins" as layout;
+@use "../../styles/material-mixins" as mat;
+
+.card {
+  @include layout.card-container;
+  min-height: 100px;
+  height: auto;
+  overflow: hidden;
+
+  .title {
+    font-size: var(--font-size-medium);
+    font-weight: 500;
+    margin-bottom: var(--spacing-md);
+    color: var(--color-text-primary);
+  }
+
+  mat-slide-toggle {
+    position: absolute;
+    top: var(--spacing-md);
+    right: var(--spacing-md);
+  }
+
+  &.status-card {
+    .title {
+      margin-bottom: 0;
+    }
+
+    .status {
+      font-size: 24px;
+      font-weight: 500;
+      margin-top: 8px;
+
+      &.on {
+        color: var(--color-accent);
+      }
+
+      &.off {
+        color: var(--color-text-secondary);
+      }
+    }
+
+    .icon {
+      position: absolute;
+      right: var(--spacing-md);
+      bottom: var(--spacing-md);
+      font-size: 28px;
+      color: var(--color-accent);
+    }
+  }
+}
+
+.single {
+  .items {
+    @include layout.flex-column(flex-start, stretch, 12px);
+  }
+}
+
+.horizontal {
+  .items {
+    @include layout.flex-row(space-between, center, 16px);
+    flex-wrap: wrap;
+  }
+}
+
+.vertical {
+  .items {
+    @include layout.flex-column(flex-start, stretch, 12px);
+  }
+}

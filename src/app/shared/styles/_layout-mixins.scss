@@ -1,0 +1,59 @@
+@mixin flex-row($justify: flex-start, $align: center, $gap: var(--spacing-md)) {
+  display: flex;
+  flex-direction: row;
+  justify-content: $justify;
+  align-items: $align;
+  gap: $gap;
+}
+
+@mixin flex-column(
+  $justify: flex-start,
+  $align: stretch,
+  $gap: var(--spacing-md)
+) {
+  display: flex;
+  flex-direction: column;
+  justify-content: $justify;
+  align-items: $align;
+  gap: $gap;
+}
+
+@mixin card-container {
+  background-color: var(--color-bg-card);
+  border-radius: var(--border-radius-md);
+  padding: var(--spacing-md);
+  color: var(--color-text-primary);
+  box-shadow: var(--shadow-card);
+  @include flex-column;
+  position: relative;
+}
+
+@mixin grid-layout(
+  $columns: repeat(auto-fit, minmax(300px, max-content)),
+  $gap: var(--spacing-md),
+  $content-based: true
+) {
+  display: grid;
+  grid-template-columns: $columns;
+  gap: $gap;
+
+  @if $content-based {
+    grid-auto-rows: min-content;
+
+    > * {
+      justify-self: stretch;
+      align-self: start;
+    }
+  }
+}
+
+@mixin responsive-container($padding: var(--spacing-md)) {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: $padding;
+
+  @media (max-width: 768px) {
+    padding: calc($padding / 2);
+  }
+}

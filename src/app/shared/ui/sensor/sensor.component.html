@@ -1,0 +1,13 @@
+<div class="sensor" [ngClass]="[sensor.label.toLowerCase(), layout]">
+  @if (isHorizontalLayout) {
+  <div class="sensor-info">
+    <span>{{ sensor.label }}</span>
+    <mat-icon>{{ sensor.icon }}</mat-icon>
+    <span>{{ sensor.value | sensorValue }}</span>
+  </div>
+  } @else {
+  <mat-icon>{{ sensor.icon }}</mat-icon>
+  <span>{{ sensor.label }}</span>
+  <span>{{ sensor.value | sensorValue }}</span>
+  }
+</div>

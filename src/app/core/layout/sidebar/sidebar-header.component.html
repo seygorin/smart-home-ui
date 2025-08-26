@@ -1,0 +1,6 @@
+<div class="sidebar-header">
+  <button mat-icon-button class="toggle-button" (click)="toggleSidebar.emit()">
+    <mat-icon>{{ isCollapsed ? "menu" : "menu_open" }}</mat-icon>
+  </button>
+  <h1 class="app-title" [class.hidden]="isCollapsed">Smart Home UI</h1>
+</div>

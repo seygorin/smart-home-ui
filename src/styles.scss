@@ -1,0 +1,94 @@
+@use "./app/shared/styles/base" as base;
+@use "./app/shared/styles/material-mixins" as mat;
+@use "./app/shared/styles/theme-variables" as theme;
+@use "./app/shared/styles/layout-mixins" as layout;
+
+@include theme.define-theme-variables;
+
+@include base.base-reset;
+
+body {
+  @include base.base-body;
+}
+
+.mat-mdc-card {
+  @include mat.mat-card-theme;
+}
+
+.mat-mdc-tab-header {
+  @include mat.mat-tab-header-theme;
+}
+
+.mat-mdc-tab-label,
+.mat-mdc-tab {
+  @include mat.mat-tab-label-theme;
+}
+
+.mat-mdc-slide-toggle.mat-accent {
+  @include mat.mat-slide-toggle-theme;
+}
+
+.mat-mdc-icon-button {
+  @include mat.mat-icon-button-theme;
+}
+
+.mat-drawer-container {
+  @include mat.mat-drawer-container-theme;
+}
+
+.mat-drawer {
+  @include mat.mat-drawer-theme;
+}
+
+.mat-drawer-content {
+  background-color: var(--color-bg-main) !important;
+}
+
+.mat-mdc-list-item {
+  @include mat.mat-list-item-theme;
+}
+
+.mat-icon {
+  @include mat.mat-icon-theme;
+}
+
+.flex-row {
+  @include layout.flex-row;
+}
+
+.flex-column {
+  @include layout.flex-column;
+}
+
+.flex-center {
+  @include layout.flex-row(center, center);
+}
+
+.flex-between {
+  @include layout.flex-row(space-between, center);
+}
+
+.flex-grow {
+  flex-grow: 1;
+}
+
+.card-grid {
+  @include layout.grid-layout;
+  padding: var(--spacing-md);
+}
+
+.container {
+  @include base.container;
+}
+
+.highlight {
+  @include base.highlight-effect;
+}
+
+@include base.responsive-adjustments;
+
+@media (max-width: 768px) {
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,36 @@
+@mixin base-reset {
+  html,
+  body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+@mixin base-body {
+  font-family: var(--font-family-base);
+  font-size: var(--font-size-base);
+  background-color: var(--color-bg-main);
+  color: var(--color-text-primary);
+  line-height: 1.5;
+}
+
+@mixin highlight-effect {
+  box-shadow: 0 0 8px var(--color-accent);
+  background-color: var(--color-accent-light);
+  transition: background-color box-shadow var(--transition-normal);
+  border-radius: var(--border-radius-lg);
+}
+
+@mixin container {
+  padding: var(--spacing-md);
+}
+
+@mixin responsive-adjustments {
+  @media (max-width: 768px) {
+    :root {
+      --spacing-md: 12px;
+      --spacing-lg: 16px;
+    }
+  }
+}

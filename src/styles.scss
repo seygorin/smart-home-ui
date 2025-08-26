@@ -1,7 +1,7 @@
-@use "./app/shared/styles/base" as base;
-@use "./app/shared/styles/material-mixins" as mat;
-@use "./app/shared/styles/theme-variables" as theme;
-@use "./app/shared/styles/layout-mixins" as layout;
+@use './app/shared/styles/base' as base;
+@use './app/shared/styles/material-mixins' as mat;
+@use './app/shared/styles/theme-variables' as theme;
+@use './app/shared/styles/layout-mixins' as layout;
 
 @include theme.define-theme-variables;
 
@@ -73,8 +73,8 @@ body {
 }
 
 .card-grid {
-  @include layout.grid-layout;
   padding: var(--spacing-md);
+  @include layout.grid-layout;
 }
 
 .container {

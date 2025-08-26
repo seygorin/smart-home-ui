@@ -1,6 +1,19 @@
-<app-tab-switcher
-  [tabs]="tabs"
-  [selectedTabId]="selectedTabId"
-  (tabSelected)="onTabSelected($event)"
-></app-tab-switcher>
-<app-card-list [cards]="selectedCards"></app-card-list>
+<div *ngIf="loading" class="loading-container">
+  <mat-spinner diameter="40"></mat-spinner>
+  <p>Loading dashboard...</p>
+</div>
+
+<div *ngIf="error && !loading" class="error-container">
+  <mat-icon>error_outline</mat-icon>
+  <p>{{ error }}</p>
+  <button mat-raised-button color="primary" (click)="retryLoad()">Retry</button>
+</div>
+
+<div *ngIf="!loading && !error" class="dashboard-content">
+  <app-tab-switcher
+    [tabs]="tabs"
+    [selectedTabId]="selectedTabId"
+    (tabSelected)="onTabSelected($event)"
+  ></app-tab-switcher>
+  <app-card-list [cards]="selectedCards"></app-card-list>
+</div>

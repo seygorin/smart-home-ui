@@ -1,4 +1,4 @@
-@use "../../shared/styles/forward" as *;
+@use '../../shared/styles/forward' as *;
 
 :host {
   @include flex-column;
@@ -46,5 +46,37 @@
       opacity: 1;
       transform: translateY(0);
     }
+  }
+
+  .loading-container,
+  .error-container {
+    @include flex-column;
+    flex: 1;
+    gap: var(--spacing-md);
+    padding: var(--spacing-xl);
+    text-align: center;
+
+    p {
+      color: var(--color-text-secondary);
+      margin: 0;
+      font-size: var(--font-size-md);
+    }
+
+    mat-icon {
+      font-size: 48px;
+      width: 48px;
+      height: 48px;
+      color: var(--color-error);
+    }
+
+    button {
+      margin-top: var(--spacing-sm);
+    }
+  }
+
+  .dashboard-content {
+    @include flex-column;
+    height: 100%;
+    width: 100%;
   }
 }

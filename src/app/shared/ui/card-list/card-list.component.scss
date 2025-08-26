@@ -1,11 +1,6 @@
-@use "../../styles/forward" as *;
+@use '../../styles/forward' as *;
 
 :host {
-  @include grid-layout(
-    repeat(auto-fit, minmax(280px, max-content)),
-    var(--spacing-md),
-    true
-  );
   padding: 0;
   width: 100%;
   max-width: 100%;
@@ -13,21 +8,27 @@
   background-color: var(--color-bg-main);
   box-sizing: border-box;
 
+  @include grid-layout(
+    repeat(auto-fit, minmax(280px, max-content)),
+    var(--spacing-md),
+    true
+  );
+
   app-card {
     animation: fadeIn var(--transition-normal) ease-in-out;
     width: 100%;
     box-sizing: border-box;
   }
+}
 
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 

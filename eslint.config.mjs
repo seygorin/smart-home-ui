@@ -1,12 +1,12 @@
 // @ts-check
-import eslint from "@eslint/js";
-import tseslint from "typescript-eslint";
-import angular from "angular-eslint";
-import eslintPluginUnicorn from "eslint-plugin-unicorn";
+import eslint from '@eslint/js'
+import tseslint from 'typescript-eslint'
+import angular from 'angular-eslint'
+import eslintPluginUnicorn from 'eslint-plugin-unicorn'
 
 export default tseslint.config(
   {
-    files: ["**/*.ts"],
+    files: ['**/*.ts'],
     extends: [
       eslint.configs.recommended,
       ...tseslint.configs.strict,
@@ -16,26 +16,27 @@ export default tseslint.config(
     ],
     processor: angular.processInlineTemplates,
     rules: {
-      "@angular-eslint/directive-selector": [
-        "error",
-        { type: "attribute", prefix: "app", style: "camelCase" },
+      '@angular-eslint/directive-selector': [
+        'error',
+        {type: 'attribute', prefix: 'app', style: 'camelCase'},
       ],
-      "@angular-eslint/component-selector": [
-        "error",
-        { type: "element", prefix: "app", style: "kebab-case" },
+      '@angular-eslint/component-selector': [
+        'error',
+        {type: 'element', prefix: 'app', style: 'kebab-case'},
       ],
 
-      "unicorn/prefer-module": "off",
-      "unicorn/no-array-reduce": "off",
-      "@typescript-eslint/no-explicit-any": "error",
+      'unicorn/prefer-module': 'off',
+      'unicorn/no-array-reduce': 'off',
+      'unicorn/no-useless-undefined': 'off',
+      '@typescript-eslint/no-explicit-any': 'error',
     },
   },
   {
-    files: ["**/*.html"],
+    files: ['**/*.html'],
     extends: [
       ...angular.configs.templateRecommended,
       ...angular.configs.templateAccessibility,
     ],
     rules: {},
   }
-);
+)

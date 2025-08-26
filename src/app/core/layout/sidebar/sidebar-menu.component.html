@@ -1,22 +1,39 @@
 <nav class="sidebar-menu" [class.collapsed]="isCollapsed">
-  @for (item of menuItems; track item.id) {
+  @if (isLoading) {
+  <div class="loading-container" [class.collapsed]="isCollapsed">
+    <mat-spinner diameter="24"></mat-spinner>
+    @if (!isCollapsed) {
+    <span class="loading-text">Loading dashboards...</span>
+    }
+  </div>
+  } @else if (dashboards.length === 0) {
+  <div class="empty-state" [class.collapsed]="isCollapsed">
+    <mat-icon class="empty-icon">dashboard</mat-icon>
+    @if (!isCollapsed) {
+    <p class="empty-message">
+      You don't have any dashboards yet. They'll appear here as soon as you
+      create them.
+    </p>
+    }
+  </div>
+  } @else { @for (dashboard of dashboards; track dashboard.id) {
   <a
     class="menu-item"
-    [class.active]="item.id === activeItem"
+    [class.active]="dashboard.id === activeItem"
     [class.collapsed]="isCollapsed"
-    (click)="selectMenuItem(item.id)"
-    (keydown.enter)="selectMenuItem(item.id)"
-    (keydown.space)="selectMenuItem(item.id)"
-    [title]="isCollapsed ? item.label : ''"
+    (click)="selectMenuItem(dashboard.id)"
+    (keydown.enter)="selectMenuItem(dashboard.id)"
+    (keydown.space)="selectMenuItem(dashboard.id)"
+    [title]="isCollapsed ? dashboard.title : ''"
     tabindex="0"
     role="button"
-    [attr.aria-label]="item.label"
-    [attr.aria-pressed]="item.id === activeItem"
+    [attr.aria-label]="dashboard.title"
+    [attr.aria-pressed]="dashboard.id === activeItem"
   >
-    <mat-icon class="menu-icon">{{ item.icon }}</mat-icon>
+    <mat-icon class="menu-icon">{{ dashboard.icon }}</mat-icon>
     <span class="menu-label" [class.hidden]="isCollapsed">{{
-      item.label
+      dashboard.title
     }}</span>
   </a>
-  }
+  } }
 </nav>

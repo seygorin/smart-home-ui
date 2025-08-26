@@ -1,0 +1,33 @@
+<div class="not-found-container">
+  <mat-card class="not-found-card">
+    <mat-card-header>
+      <mat-card-title>Page Not Found</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="content">
+        <mat-icon class="large-icon">error_outline</mat-icon>
+        <h1>404</h1>
+        <p>The page you're looking for doesn't exist.</p>
+
+        <div class="navigation-buttons">
+          <ng-container
+            *ngIf="isAuthenticated$ | async; else unauthenticatedNav"
+          >
+            <button mat-raised-button color="primary" routerLink="/dashboard">
+              <mat-icon>dashboard</mat-icon>
+              Go to Dashboard
+            </button>
+          </ng-container>
+
+          <ng-template #unauthenticatedNav>
+            <button mat-raised-button color="primary" routerLink="/login">
+              <mat-icon>login</mat-icon>
+              Go to Login
+            </button>
+          </ng-template>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

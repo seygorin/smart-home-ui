@@ -1,16 +1,40 @@
-import {Component, HostBinding, OnInit, OnDestroy, inject} from '@angular/core'
+import {
+  Component,
+  HostBinding,
+  OnInit,
+  OnDestroy,
+  inject,
+  signal,
+  computed,
+} from '@angular/core'
 import {ActivatedRoute, Router} from '@angular/router'
 import {CommonModule} from '@angular/common'
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner'
 import {MatIconModule} from '@angular/material/icon'
 import {MatButtonModule} from '@angular/material/button'
+import {MatToolbarModule} from '@angular/material/toolbar'
+import {MatDialog} from '@angular/material/dialog'
 import {Subject, combineLatest} from 'rxjs'
 import {takeUntil, switchMap} from 'rxjs/operators'
+import {Store} from '@ngrx/store'
 
 import {Tab, Card, DashboardData, DashboardInfo} from '../../shared/models'
 import {DashboardService} from '../../core/services/dashboard.service'
 import {TabSwitcherComponent} from './tab-switcher/tab-switcher.component'
 import {CardListComponent} from '../../shared/ui/card-list/card-list.component'
+import {
+  ConfirmationModalComponent,
+  ConfirmationModalData,
+} from '../../shared/ui/confirmation-modal/confirmation-modal.component'
+import {AppState} from '../../store'
+import * as DashboardActions from '../../store/dashboard/dashboard.actions'
+import {
+  selectEditMode,
+  selectSelectedDashboard,
+  selectSavingLoading,
+  selectDashboardError,
+  selectSavingError,
+} from '../../store/dashboard/dashboard.selectors'
 
 @Component({
   selector: 'app-dashboard',
@@ -20,6 +44,7 @@ import {CardListComponent} from '../../shared/ui/card-list/card-list.component'
     MatProgressSpinnerModule,
     MatIconModule,
     MatButtonModule,
+    MatToolbarModule,
     TabSwitcherComponent,
     CardListComponent,
   ],
@@ -30,17 +55,52 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private readonly route = inject(ActivatedRoute)
   private readonly router = inject(Router)
   private readonly dashboardService = inject(DashboardService)
+  private readonly store = inject(Store<AppState>)
+  private readonly dialog = inject(MatDialog)
   private readonly destroy$ = new Subject<void>()
 
   @HostBinding('class.tab-transition') tabTransition = false
+
+  isEditMode = signal(false)
+
+  editMode$ = this.store.select(selectEditMode)
+  selectedDashboard$ = this.store.select(selectSelectedDashboard)
+  savingLoading$ = this.store.select(selectSavingLoading)
+  dashboardError$ = this.store.select(selectDashboardError)
+  savingError$ = this.store.select(selectSavingError)
+
+  canSave = computed(
+    () => this.isEditMode() && !this.loading && !this.isSaving()
+  )
+  canDiscard = computed(() => this.isEditMode() && !this.isSaving())
+
+  isSaving = signal(false)
+  saveError = signal<string | null>(null)
+  saveSuccess = signal(false)
 
   tabs: Tab[] = []
   selectedTabId = ''
   selectedCards: Card[] = []
   loading = true
   error: string | undefined = undefined
+  dashboardInfo: DashboardInfo | undefined = undefined
 
   ngOnInit(): void {
+    this.editMode$.pipe(takeUntil(this.destroy$)).subscribe((editMode) => {
+      this.isEditMode.set(editMode)
+    })
+
+    this.savingLoading$.pipe(takeUntil(this.destroy$)).subscribe((isSaving) => {
+      this.isSaving.set(isSaving)
+    })
+
+    this.savingError$.pipe(takeUntil(this.destroy$)).subscribe((error) => {
+      this.saveError.set(error)
+      if (error) {
+        setTimeout(() => this.saveError.set(null), 5000)
+      }
+    })
+
     this.dashboardService
       .getDashboards()
       .pipe(
@@ -110,6 +170,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.handleFallbackNavigation()
       return
     }
+
+    this.dashboardInfo = availableDashboards.find(
+      (d) => d.id === validDashboardId
+    )
+
+    this.store.dispatch(
+      DashboardActions.loadDashboard({dashboardId: validDashboardId})
+    )
 
     this.dashboardService
       .getDashboardData(validDashboardId)
@@ -227,5 +295,61 @@ export class DashboardComponent implements OnInit, OnDestroy {
     const cards = tab?.cards || []
 
     return cards
+  }
+
+  enterEditMode(): void {
+    this.store.dispatch(DashboardActions.enterEditMode())
+  }
+
+  exitEditMode(): void {
+    this.store.dispatch(DashboardActions.exitEditMode())
+  }
+
+  saveDashboard(): void {
+    const dashboardId = this.route.snapshot.paramMap.get('dashboardId')
+    if (dashboardId && this.tabs.length > 0) {
+      const dashboardData: DashboardData = {
+        tabs: this.tabs,
+      }
+      this.saveError.set(null)
+      this.saveSuccess.set(true)
+      this.store.dispatch(
+        DashboardActions.saveDashboard({
+          dashboardId,
+          dashboard: dashboardData,
+        })
+      )
+    }
+  }
+
+  discardChanges(): void {
+    this.store.dispatch(DashboardActions.discardChanges())
+  }
+
+  deleteDashboard(): void {
+    const dashboardId = this.route.snapshot.paramMap.get('dashboardId')
+    if (!dashboardId || !this.dashboardInfo) return
+
+    const confirmationData: ConfirmationModalData = {
+      title: 'Delete Dashboard',
+      message: `Are you sure you want to delete "${this.dashboardInfo.title}"? This action cannot be undone.`,
+      confirmText: 'Delete',
+      cancelText: 'Cancel',
+      isDestructive: true,
+    }
+
+    const dialogRef = this.dialog.open(ConfirmationModalComponent, {
+      width: '400px',
+      data: confirmationData,
+    })
+
+    dialogRef
+      .afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((result) => {
+        if (result === true) {
+          this.store.dispatch(DashboardActions.deleteDashboard({dashboardId}))
+        }
+      })
   }
 }

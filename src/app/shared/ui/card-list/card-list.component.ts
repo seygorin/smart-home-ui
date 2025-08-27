@@ -12,4 +12,5 @@ import {CardComponent} from '../card/card.component'
 })
 export class CardListComponent {
   @Input() cards: Card[] = []
+  @Input() editMode = false
 }

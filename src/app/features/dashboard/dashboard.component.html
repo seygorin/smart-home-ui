@@ -10,10 +10,63 @@
 </div>
 
 <div *ngIf="!loading && !error" class="dashboard-content">
+  <mat-toolbar class="dashboard-toolbar">
+    <div class="dashboard-info">
+      <mat-icon *ngIf="dashboardInfo?.icon">{{ dashboardInfo?.icon }}</mat-icon>
+      <h1>{{ dashboardInfo?.title }}</h1>
+    </div>
+
+    <div class="toolbar-actions">
+      <ng-container *ngIf="!isEditMode(); else editModeActions">
+        <button mat-button (click)="enterEditMode()">
+          <mat-icon>edit</mat-icon>
+          Edit
+        </button>
+        <button mat-button color="warn" (click)="deleteDashboard()">
+          <mat-icon>delete</mat-icon>
+          Delete
+        </button>
+      </ng-container>
+
+      <ng-template #editModeActions>
+        <button
+          mat-button
+          (click)="saveDashboard()"
+          [disabled]="!canSave()"
+          color="primary"
+        >
+          <mat-icon *ngIf="!isSaving()">save</mat-icon>
+          <mat-spinner *ngIf="isSaving()" diameter="16"></mat-spinner>
+          {{ isSaving() ? 'Saving...' : 'Save' }}
+        </button>
+        <button
+          mat-button
+          (click)="discardChanges()"
+          [disabled]="!canDiscard()"
+        >
+          <mat-icon>cancel</mat-icon>
+          Discard
+        </button>
+      </ng-template>
+    </div>
+  </mat-toolbar>
+
+  <div *ngIf="saveSuccess()" class="feedback-message success-message">
+    <mat-icon>check_circle</mat-icon>
+    <span>Dashboard saved successfully!</span>
+  </div>
+
+  <div *ngIf="saveError()" class="feedback-message error-message">
+    <mat-icon>error</mat-icon>
+    <span>{{ saveError() }}</span>
+  </div>
+
   <app-tab-switcher
     [tabs]="tabs"
     [selectedTabId]="selectedTabId"
+    [editMode]="isEditMode()"
     (tabSelected)="onTabSelected($event)"
   ></app-tab-switcher>
-  <app-card-list [cards]="selectedCards"></app-card-list>
+  <app-card-list [cards]="selectedCards" [editMode]="isEditMode()">
+  </app-card-list>
 </div>

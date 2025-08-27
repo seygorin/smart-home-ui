@@ -14,6 +14,7 @@ import {MatTabChangeEvent} from '@angular/material/tabs'
 export class TabSwitcherComponent {
   @Input() tabs: Tab[] = []
   @Input() selectedTabId = ''
+  @Input() editMode = false
   @Output() tabSelected = new EventEmitter<string>()
 
   getSelectedIndex(): number {

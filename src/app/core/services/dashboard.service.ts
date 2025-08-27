@@ -3,13 +3,20 @@ import {HttpClient, HttpErrorResponse} from '@angular/common/http'
 import {BehaviorSubject, Observable, of} from 'rxjs'
 import {tap, catchError, shareReplay} from 'rxjs/operators'
 
-import {DashboardInfo, DashboardData} from '../../shared/models'
+import {
+  DashboardInfo,
+  DashboardData,
+  CreateDashboardRequest,
+  DeviceItem,
+  SensorItem,
+} from '../../shared/models'
 
 @Injectable({
   providedIn: 'root',
 })
 export class DashboardService {
   private readonly http = inject(HttpClient)
+  private readonly baseUrl = '/api'
 
   private readonly dashboardsSubject = new BehaviorSubject<DashboardInfo[]>([])
   private readonly loadingSubject = new BehaviorSubject<boolean>(false)
@@ -33,7 +40,7 @@ export class DashboardService {
     this.errorSubject.next(undefined)
 
     this.dashboardsCache = this.http
-      .get<DashboardInfo[]>('http://localhost:3004/dashboards')
+      .get<DashboardInfo[]>(`${this.baseUrl}/dashboards`)
       .pipe(
         tap((dashboards) => {
           this.dashboardsSubject.next(dashboards)
@@ -63,7 +70,7 @@ export class DashboardService {
     }
 
     const dashboardData$ = this.http
-      .get<DashboardData>(`http://localhost:3004/dashboards/${dashboardId}`)
+      .get<DashboardData>(`${this.baseUrl}/dashboards/${dashboardId}`)
       .pipe(
         catchError((error: HttpErrorResponse) => {
           console.error(
@@ -107,13 +114,85 @@ export class DashboardService {
     this.dashboardDataCache.delete(dashboardId)
   }
 
- 
   clearCache(): void {
     this.dashboardsCache = undefined
     this.dashboardDataCache.clear()
     this.errorSubject.next(undefined)
   }
 
+  createDashboard(
+    dashboard: CreateDashboardRequest
+  ): Observable<DashboardInfo> {
+    return this.http
+      .post<DashboardInfo>(`${this.baseUrl}/dashboards`, dashboard)
+      .pipe(
+        tap(() => {
+          this.clearCache()
+        }),
+        catchError((error: HttpErrorResponse) => {
+          console.error('Error creating dashboard:', error)
+          throw error
+        })
+      )
+  }
+
+  updateDashboard(
+    dashboardId: string,
+    dashboard: DashboardData
+  ): Observable<DashboardData> {
+    return this.http
+      .put<DashboardData>(
+        `${this.baseUrl}/dashboards/${dashboardId}`,
+        dashboard
+      )
+      .pipe(
+        tap(() => {
+          this.clearDashboardDataCache(dashboardId)
+        }),
+        catchError((error: HttpErrorResponse) => {
+          console.error(`Error updating dashboard ${dashboardId}:`, error)
+          throw error
+        })
+      )
+  }
+
+  deleteDashboard(dashboardId: string): Observable<void> {
+    return this.http
+      .delete<void>(`${this.baseUrl}/dashboards/${dashboardId}`)
+      .pipe(
+        tap(() => {
+          this.clearCache()
+          this.clearDashboardDataCache(dashboardId)
+        }),
+        catchError((error: HttpErrorResponse) => {
+          console.error(`Error deleting dashboard ${dashboardId}:`, error)
+          throw error
+        })
+      )
+  }
+
+  getDevices(): Observable<(DeviceItem | SensorItem)[]> {
+    return this.http
+      .get<(DeviceItem | SensorItem)[]>(`${this.baseUrl}/devices`)
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          console.error('Error loading devices:', error)
+
+          return of([])
+        })
+      )
+  }
+
+  updateDeviceState(deviceId: string, state: boolean): Observable<DeviceItem> {
+    return this.http
+      .patch<DeviceItem>(`${this.baseUrl}/devices/${deviceId}`, {state})
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          console.error(`Error updating device state for ${deviceId}:`, error)
+          throw error
+        })
+      )
+  }
 
   private getErrorMessage(error: HttpErrorResponse): string {
     if (error.status === 0) {

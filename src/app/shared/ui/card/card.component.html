@@ -24,11 +24,13 @@
       [layout]="card.layout === 'horizontalLayout' ? 'horizontal' : 'vertical'"
     ></app-sensor>
     } } } } } @else {
-    <div class="empty-state">
-      <mat-icon class="empty-icon">inbox</mat-icon>
-      <p class="empty-message">No devices or sensors</p>
-      <p class="empty-hint">Add entities to this card to get started</p>
-    </div>
+    <app-empty-state
+      icon="devices"
+      title="No Devices"
+      message="Add devices or sensors to this card to get started"
+      [showAction]="false"
+      cssClass="compact"
+    ></app-empty-state>
     }
   </div>
 </div>

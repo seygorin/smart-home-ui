@@ -155,3 +155,13 @@ export const deleteDashboardFailure = createAction(
   '[Dashboard] Delete Dashboard Failure',
   props<{error: string}>()
 )
+
+export const createDashboardWithDefaultTab = createAction(
+  '[Dashboard] Create Dashboard With Default Tab',
+  props<{dashboardId: string}>()
+)
+
+export const createDashboardWithDefaultTabFailure = createAction(
+  '[Dashboard] Create Dashboard With Default Tab Failure',
+  props<{error: string}>()
+)

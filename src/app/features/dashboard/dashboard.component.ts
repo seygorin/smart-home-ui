@@ -26,9 +26,13 @@ import {
   CardLayout,
 } from '../../shared/models'
 import {DashboardService} from '../../core/services/dashboard.service'
+import {NavigationService} from '../../core/services/navigation.service'
 import {DashboardValidationService} from '../../shared/services/dashboard-validation.service'
 import {TabSwitcherComponent} from './tab-switcher/tab-switcher.component'
 import {CardListComponent} from '../../shared/ui/card-list/card-list.component'
+import {EmptyStateComponent} from '../../shared/ui/empty-state/empty-state.component'
+import {LoadingStateComponent} from '../../shared/ui/loading-state/loading-state.component'
+import {ErrorStateComponent} from '../../shared/ui/error-state/error-state.component'
 import {
   ConfirmationModalComponent,
   ConfirmationModalData,
@@ -59,6 +63,9 @@ import {
     MatToolbarModule,
     TabSwitcherComponent,
     CardListComponent,
+    EmptyStateComponent,
+    LoadingStateComponent,
+    ErrorStateComponent,
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
@@ -67,6 +74,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private readonly route = inject(ActivatedRoute)
   private readonly router = inject(Router)
   private readonly dashboardService = inject(DashboardService)
+  private readonly navigationService = inject(NavigationService)
   private readonly validationService = inject(DashboardValidationService)
   private readonly store = inject(Store<AppState>)
   private readonly dialog = inject(MatDialog)
@@ -180,7 +188,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       const dashboardId =
         this.route.snapshot.paramMap.get('dashboardId') ?? undefined
       if (dashboardId) {
-        this.router.navigate(['/dashboard', dashboardId, tabId])
+        this.navigationService.navigateToDashboard(dashboardId, tabId)
       }
 
       this.selectedTabId = tabId
@@ -199,7 +207,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     availableDashboards: DashboardInfo[]
   ): void {
     if (!dashboardId) {
-      this.handleFallbackNavigation()
+      this.navigationService.handleFallbackNavigation()
       return
     }
 
@@ -208,7 +216,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       availableDashboards
     )
     if (!validDashboardId) {
-      this.handleFallbackNavigation()
+      this.navigationService.handleFallbackNavigation()
       return
     }
 
@@ -278,44 +286,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   private handleFallbackNavigation(): void {
-    const firstDashboard = this.dashboardService.getFirstAvailableDashboard()
-
-    if (firstDashboard) {
-      this.dashboardService
-        .getDashboardData(firstDashboard.id)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe({
-          next: (dashboardData: DashboardData) => {
-            const firstTab = dashboardData.tabs[0]
-            if (firstTab) {
-              this.router.navigate(
-                ['/dashboard', firstDashboard.id, firstTab.id],
-                {
-                  replaceUrl: true,
-                }
-              )
-            } else {
-              this.error = 'No dashboard content available'
-              this.loading = false
-            }
-          },
-          error: () => {
-            this.error = 'Failed to load dashboard data'
-            this.loading = false
-          },
-        })
-    } else {
+    this.navigationService.handleFallbackNavigation().catch(() => {
       this.error = 'No dashboards available'
       this.loading = false
-    }
+    })
   }
 
   private handleTabFallback(dashboardId: string, tabs: Tab[]): void {
     const firstTab = tabs[0]
     if (firstTab) {
-      this.router.navigate(['/dashboard', dashboardId, firstTab.id], {
-        replaceUrl: true,
-      })
+      this.navigationService.navigateToDashboard(dashboardId, firstTab.id, true)
     } else {
       this.error = 'No content available for this dashboard'
       this.loading = false
@@ -401,8 +381,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     const dashboardId = this.route.snapshot.paramMap.get('dashboardId')
     if (dashboardId) {
       setTimeout(() => {
-        this.router.navigate(['/dashboard', dashboardId, newTabId])
-      }, 100) 
+        this.navigationService.navigateToDashboard(dashboardId, newTabId)
+      }, 100)
     }
   }
 

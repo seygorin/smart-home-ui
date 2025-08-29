@@ -7,7 +7,7 @@
 
   @media (min-width: 768px) {
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    min-width: 600px;
+
   }
 }
 
@@ -61,8 +61,8 @@
     &::before {
       content: '✓';
       position: absolute;
-      top: 12px;
-      right: 12px;
+      top: 9px;
+      right: 11px;
       color: var(--mat-sys-on-primary);
       font-size: 12px;
       font-weight: bold;

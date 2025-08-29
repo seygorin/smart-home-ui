@@ -10,12 +10,14 @@ import {
   DeviceItem,
   SensorItem,
 } from '../../shared/models'
+import {RetryService} from '../../shared/services/retry.service'
 
 @Injectable({
   providedIn: 'root',
 })
 export class DashboardService {
   private readonly http = inject(HttpClient)
+  private readonly retryService = inject(RetryService)
   private readonly baseUrl = '/api'
 
   private readonly dashboardsSubject = new BehaviorSubject<DashboardInfo[]>([])
@@ -39,8 +41,11 @@ export class DashboardService {
     this.loadingSubject.next(true)
     this.errorSubject.next(undefined)
 
-    this.dashboardsCache = this.http
-      .get<DashboardInfo[]>(`${this.baseUrl}/dashboards`)
+    this.dashboardsCache = this.retryService
+      .withRetry(this.http.get<DashboardInfo[]>(`${this.baseUrl}/dashboards`), {
+        maxRetries: 2,
+        delay: 1000,
+      })
       .pipe(
         tap((dashboards) => {
           this.dashboardsSubject.next(dashboards)
@@ -69,8 +74,13 @@ export class DashboardService {
       return cachedData
     }
 
-    const dashboardData$ = this.http
-      .get<DashboardData>(`${this.baseUrl}/dashboards/${dashboardId}`)
+    const dashboardData$ = this.retryService
+      .withRetry(
+        this.http.get<DashboardData>(
+          `${this.baseUrl}/dashboards/${dashboardId}`
+        ),
+        {maxRetries: 2, delay: 1000}
+      )
       .pipe(
         catchError((error: HttpErrorResponse) => {
           console.error(
@@ -184,8 +194,13 @@ export class DashboardService {
   }
 
   updateDeviceState(deviceId: string, state: boolean): Observable<DeviceItem> {
-    return this.http
-      .patch<DeviceItem>(`${this.baseUrl}/devices/${deviceId}`, {state})
+    return this.retryService
+      .withRetry(
+        this.http.patch<DeviceItem>(`${this.baseUrl}/devices/${deviceId}`, {
+          state,
+        }),
+        {maxRetries: 2, delay: 500}
+      )
       .pipe(
         catchError((error: HttpErrorResponse) => {
           console.error(`Error updating device state for ${deviceId}:`, error)

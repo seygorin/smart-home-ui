@@ -5,6 +5,7 @@ import {
   Output,
   signal,
   inject,
+  computed,
 } from '@angular/core'
 import {CommonModule} from '@angular/common'
 import {FormsModule} from '@angular/forms'
@@ -56,6 +57,10 @@ export class TabSwitcherComponent {
 
   newTabError = signal<string | null>(null)
   editTabError = signal<string | null>(null)
+
+  get selectedIndex(): number {
+    return this.tabs.findIndex((tab) => tab.id === this.selectedTabId)
+  }
 
   getSelectedIndex(): number {
     return this.tabs.findIndex((tab) => tab.id === this.selectedTabId)

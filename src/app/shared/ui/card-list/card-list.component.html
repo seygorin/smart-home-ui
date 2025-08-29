@@ -1,4 +1,9 @@
-@for (card of cards; track card.id) {
+@if (loading) {
+<app-loading-state
+  message="Loading cards..."
+  cssClass="compact"
+></app-loading-state>
+} @else if (cards.length > 0) { @for (card of cards; track card.id) {
 <div class="card-wrapper" [class.edit-mode]="editMode">
   <app-card [card]="card"></app-card>
 
@@ -58,6 +63,16 @@
   </div>
   }
 </div>
+} } @else {
+<app-empty-state
+  icon="dashboard"
+  title="No Cards Yet"
+  message="This tab doesn't have any cards. Add your first card to start organizing your devices and sensors."
+  [actionText]="editMode ? 'Add Card' : ''"
+  actionIcon="add"
+  [showAction]="editMode"
+  (action)="onAddCard()"
+></app-empty-state>
 } @if (editMode) {
 <div class="add-card-container">
   <button

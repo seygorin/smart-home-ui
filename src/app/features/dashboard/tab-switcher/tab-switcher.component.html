@@ -2,7 +2,7 @@
 <mat-tab-group
   mat-stretch-tabs="false"
   mat-align-tabs="start"
-  [selectedIndex]="getSelectedIndex()"
+  [selectedIndex]="selectedIndex"
   (selectedTabChange)="onTabChange($event)"
 >
   @for (tab of tabs; track tab.id) {
@@ -89,9 +89,7 @@
         </button>
       </div>
     </div>
-    }
-
-    @if (isAddingTab()) {
+    } @if (isAddingTab()) {
     <div class="tab-item add-tab-item">
       <div class="tab-add-container">
         <mat-form-field

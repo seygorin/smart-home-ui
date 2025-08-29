@@ -10,12 +10,17 @@ import {
 import {CommonModule} from '@angular/common'
 import {MatListModule} from '@angular/material/list'
 import {Subject, takeUntil} from 'rxjs'
+import {Store} from '@ngrx/store'
 import {SidebarHeaderComponent} from './sidebar-header.component'
 import {SidebarMenuComponent} from './sidebar-menu.component'
 import {SidebarFooterComponent} from './sidebar-footer.component'
 import {AuthService} from '../../services/auth.service'
 import {DashboardService} from '../../services/dashboard.service'
+import {NavigationService} from '../../services/navigation.service'
+import {DashboardNavigationService} from '../../services/dashboard-navigation.service'
 import {DashboardInfo, UserProfile} from '../../../shared/models'
+import {AppState} from '../../../store'
+import * as DashboardActions from '../../../store/dashboard/dashboard.actions'
 
 @Component({
   selector: 'app-sidebar',
@@ -33,6 +38,11 @@ import {DashboardInfo, UserProfile} from '../../../shared/models'
 export class SidebarComponent implements OnInit, OnDestroy {
   private readonly authService = inject(AuthService)
   private readonly dashboardService = inject(DashboardService)
+  private readonly navigationService = inject(NavigationService)
+  private readonly dashboardNavigationService = inject(
+    DashboardNavigationService
+  )
+  private readonly store = inject(Store<AppState>)
   private readonly destroy$ = new Subject<void>()
 
   @Input() isCollapsed = false
@@ -41,8 +51,9 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   isAuthenticated = false
   userProfile: UserProfile | undefined
-  dashboards: DashboardInfo[] = []
+  dashboards: Array<DashboardInfo & {isActive: boolean}> = []
   isLoading = false
+  activeDashboardId: string | null = null
 
   ngOnInit(): void {
     this.authService.isAuthenticated$
@@ -67,6 +78,15 @@ export class SidebarComponent implements OnInit, OnDestroy {
       .subscribe((loading) => {
         this.isLoading = loading
       })
+
+    this.dashboardService.dashboards$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((dashboards) => {
+        this.dashboards = dashboards.map((dashboard) => ({
+          ...dashboard,
+          isActive: false, 
+        }))
+      })
   }
 
   ngOnDestroy(): void {
@@ -78,9 +98,14 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.dashboardService
       .getDashboards()
       .pipe(takeUntil(this.destroy$))
-      .subscribe((dashboards) => {
-        this.dashboards = dashboards
-      })
+      .subscribe()
+  }
+
+  refreshDashboards(): void {
+    this.dashboardService
+      .refreshDashboards()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe()
   }
 
   onMenuItemClick(dashboardId: string): void {

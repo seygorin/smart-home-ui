@@ -11,6 +11,8 @@ import {
   ConfirmationModalComponent,
   ConfirmationModalData,
 } from '../confirmation-modal/confirmation-modal.component'
+import {EmptyStateComponent} from '../empty-state/empty-state.component'
+import {LoadingStateComponent} from '../loading-state/loading-state.component'
 
 @Component({
   selector: 'app-card-list',
@@ -21,6 +23,8 @@ import {
     MatIconModule,
     MatMenuModule,
     CardComponent,
+    EmptyStateComponent,
+    LoadingStateComponent,
   ],
   templateUrl: './card-list.component.html',
   styleUrl: './card-list.component.scss',
@@ -30,6 +34,7 @@ export class CardListComponent {
 
   @Input() cards: Card[] = []
   @Input() editMode = false
+  @Input() loading = false
 
   @Output() cardAdded = new EventEmitter<CardLayout>()
   @Output() cardRemoved = new EventEmitter<string>()
@@ -37,7 +42,7 @@ export class CardListComponent {
     cardId: string
     newIndex: number
   }>()
-  @Output() cardContentEdited = new EventEmitter<string>()
+  @Output() cardContentEdited = new EventEmitter<string>
 
   onAddCard(): void {
     const dialogRef = this.dialog.open(CardLayoutModalComponent, {
@@ -88,7 +93,7 @@ export class CardListComponent {
     } else if (direction === 'down' && currentIndex < this.cards.length - 1) {
       newIndex = currentIndex + 1
     } else {
-      return 
+      return
     }
 
     this.cardReordered.emit({cardId, newIndex})

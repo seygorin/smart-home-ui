@@ -1,13 +1,15 @@
-<div *ngIf="loading" class="loading-container">
-  <mat-spinner diameter="40"></mat-spinner>
-  <p>Loading dashboard...</p>
-</div>
+<app-loading-state
+  *ngIf="loading"
+  message="Loading dashboard..."
+  [diameter]="40"
+></app-loading-state>
 
-<div *ngIf="error && !loading" class="error-container">
-  <mat-icon>error_outline</mat-icon>
-  <p>{{ error }}</p>
-  <button mat-raised-button color="primary" (click)="retryLoad()">Retry</button>
-</div>
+<app-error-state
+  *ngIf="error && !loading"
+  title="Failed to Load Dashboard"
+  [message]="error"
+  (retry)="retryLoad()"
+></app-error-state>
 
 <div *ngIf="!loading && !error" class="dashboard-content">
   <mat-toolbar class="dashboard-toolbar">
@@ -61,6 +63,7 @@
     <span>{{ saveError() }}</span>
   </div>
 
+  @if (tabs.length > 0) {
   <app-tab-switcher
     [tabs]="tabs"
     [selectedTabId]="selectedTabId"
@@ -80,4 +83,14 @@
     (cardContentEdited)="onCardContentEdited($event)"
   >
   </app-card-list>
+  } @else {
+  <app-empty-state
+    icon="tab"
+    title="No Tabs Available"
+    message="This dashboard doesn't have any tabs yet. Add your first tab to start organizing your smart home devices."
+    [actionText]="isEditMode() ? 'Add Tab' : 'Enter Edit Mode'"
+    [actionIcon]="isEditMode() ? 'add' : 'edit'"
+    (action)="isEditMode() ? onTabAdded('New Tab') : enterEditMode()"
+  ></app-empty-state>
+  }
 </div>

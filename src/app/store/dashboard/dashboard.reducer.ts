@@ -579,5 +579,23 @@ export const dashboardReducer = createReducer(
       loading: {...state.loading, saving: false},
       error: {...state.error, saving: error},
     })
+  ),
+
+  on(
+    DashboardActions.createDashboardWithDefaultTab,
+    (state): DashboardState => ({
+      ...state,
+      loading: {...state.loading, saving: false},
+      error: {...state.error, saving: null},
+    })
+  ),
+
+  on(
+    DashboardActions.createDashboardWithDefaultTabFailure,
+    (state, {error}): DashboardState => ({
+      ...state,
+      loading: {...state.loading, saving: false},
+      error: {...state.error, saving: error},
+    })
   )
 )

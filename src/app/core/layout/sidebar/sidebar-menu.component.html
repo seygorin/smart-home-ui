@@ -19,7 +19,7 @@
   } @else { @for (dashboard of dashboards; track dashboard.id) {
   <a
     class="menu-item"
-    [class.active]="dashboard.id === activeItem"
+    [class.active]="dashboard.isActive || dashboard.id === activeItem"
     [class.collapsed]="isCollapsed"
     (click)="selectMenuItem(dashboard.id)"
     (keydown.enter)="selectMenuItem(dashboard.id)"
@@ -28,7 +28,7 @@
     tabindex="0"
     role="button"
     [attr.aria-label]="dashboard.title"
-    [attr.aria-pressed]="dashboard.id === activeItem"
+    [attr.aria-pressed]="dashboard.isActive || dashboard.id === activeItem"
   >
     <mat-icon class="menu-icon">{{ dashboard.icon }}</mat-icon>
     <span class="menu-label" [class.hidden]="isCollapsed">{{

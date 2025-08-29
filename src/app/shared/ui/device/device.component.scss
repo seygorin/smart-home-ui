@@ -1,5 +1,5 @@
-@use "../../styles/component-mixins" as comp;
-@use "../../styles/material-mixins" as mat;
+@use '../../styles/component-mixins' as comp;
+@use '../../styles/material-mixins' as mat;
 
 .device {
   @include comp.base-component;
@@ -28,5 +28,32 @@
 .active {
   mat-icon {
     color: var(--color-accent);
+  }
+}
+
+.device-icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+}
+
+.loading {
+  opacity: 0.7;
+
+  mat-slide-toggle {
+    pointer-events: none;
+  }
+
+  .device-icon-container {
+    mat-spinner {
+      width: 20px !important;
+      height: 20px !important;
+
+      ::ng-deep circle {
+        stroke: var(--color-accent);
+      }
+    }
   }
 }

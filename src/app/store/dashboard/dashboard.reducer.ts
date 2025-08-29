@@ -172,9 +172,7 @@ export const dashboardReducer = createReducer(
       const newIndex =
         direction === 'left' ? currentIndex - 1 : currentIndex + 1
 
-      if (newIndex < 0 || newIndex >= tabs.length)
-        return state
-
+      if (newIndex < 0 || newIndex >= tabs.length) return state
       ;[tabs[currentIndex], tabs[newIndex]] = [
         tabs[newIndex],
         tabs[currentIndex],
@@ -361,6 +359,30 @@ export const dashboardReducer = createReducer(
   ),
 
   on(
+    DashboardActions.replaceCardItems,
+    (state, {tabId, cardId, items}): DashboardState => {
+      if (!state.selectedDashboard) return state
+
+      return {
+        ...state,
+        selectedDashboard: {
+          ...state.selectedDashboard,
+          tabs: state.selectedDashboard.tabs.map((tab) =>
+            tab.id === tabId
+              ? {
+                  ...tab,
+                  cards: tab.cards.map((card) =>
+                    card.id === cardId ? {...card, items} : card
+                  ),
+                }
+              : tab
+          ),
+        },
+      }
+    }
+  ),
+
+  on(
     DashboardActions.loadDevices,
     (state): DashboardState => ({
       ...state,
@@ -419,6 +441,33 @@ export const dashboardReducer = createReducer(
         ...state,
         availableDevices: updatedAvailableDevices,
         selectedDashboard: updatedDashboard,
+        loading: {
+          ...state.loading,
+          deviceToggling: {
+            ...state.loading.deviceToggling,
+            [deviceId]: true,
+          },
+        },
+      }
+    }
+  ),
+
+  on(
+    DashboardActions.toggleDeviceStateSuccess,
+    (state, {deviceId}): DashboardState => {
+      return {
+        ...state,
+        loading: {
+          ...state.loading,
+          deviceToggling: {
+            ...state.loading.deviceToggling,
+            [deviceId]: false,
+          },
+        },
+        error: {
+          ...state.error,
+          devices: null,
+        },
       }
     }
   ),
@@ -461,6 +510,13 @@ export const dashboardReducer = createReducer(
         ...state,
         availableDevices: revertedAvailableDevices,
         selectedDashboard: revertedDashboard,
+        loading: {
+          ...state.loading,
+          deviceToggling: {
+            ...state.loading.deviceToggling,
+            [deviceId]: false,
+          },
+        },
         error: {...state.error, devices: error},
       }
     }

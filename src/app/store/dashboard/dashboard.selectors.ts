@@ -41,10 +41,24 @@ export const selectSavingLoading = createSelector(
   (state) => state.loading.saving
 )
 
+export const selectDeviceToggling = createSelector(
+  selectDashboardState,
+  (state) => state.loading.deviceToggling
+)
+
+export const selectIsDeviceToggling = createSelector(
+  selectDeviceToggling,
+  (deviceToggling: Record<string, boolean>, props: {deviceId: string}) =>
+    deviceToggling[props.deviceId] || false
+)
+
 export const selectAnyLoading = createSelector(
   selectDashboardState,
   (state) =>
-    state.loading.dashboard || state.loading.devices || state.loading.saving
+    state.loading.dashboard ||
+    state.loading.devices ||
+    state.loading.saving ||
+    Object.values(state.loading.deviceToggling).some(Boolean)
 )
 
 export const selectDashboardError = createSelector(

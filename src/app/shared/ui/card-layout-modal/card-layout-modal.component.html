@@ -1,0 +1,49 @@
+<h2 mat-dialog-title>Select Card Layout</h2>
+
+<mat-dialog-content>
+  <div class="layout-options">
+    @for (option of layoutOptions; track option.value) {
+    <div
+      class="layout-option"
+      [class.selected]="selectedLayout() === option.value"
+      (click)="selectLayout(option.value)"
+    >
+      <div class="layout-preview" [attr.data-layout]="option.value">
+        @switch (option.value) { @case ('singleDevice') {
+        <div class="device-item single"></div>
+        } @case ('horizontalLayout') {
+        <div class="device-item horizontal"></div>
+        <div class="device-item horizontal"></div>
+        <div class="device-item horizontal"></div>
+        } @case ('verticalLayout') {
+        <div class="device-item vertical"></div>
+        <div class="device-item vertical"></div>
+        <div class="device-item vertical"></div>
+        } }
+      </div>
+
+      <div class="layout-info">
+        <div class="layout-header">
+          <mat-icon>{{ option.icon }}</mat-icon>
+          <h3>{{ option.title }}</h3>
+        </div>
+        <p>{{ option.description }}</p>
+      </div>
+    </div>
+    }
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()" type="button">Cancel</button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="onConfirm()"
+    type="button"
+    [disabled]="!selectedLayout()"
+  >
+    <mat-icon>add</mat-icon>
+    Create Card
+  </button>
+</mat-dialog-actions>

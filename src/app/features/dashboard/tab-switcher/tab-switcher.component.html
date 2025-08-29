@@ -1,3 +1,4 @@
+@if (!editMode) {
 <mat-tab-group
   mat-stretch-tabs="false"
   mat-align-tabs="start"
@@ -8,3 +9,131 @@
   <mat-tab [label]="tab.title"></mat-tab>
   }
 </mat-tab-group>
+} @else {
+<div class="tab-switcher-edit">
+  <div class="tabs-container">
+    @for (tab of tabs; track tab.id; let i = $index) {
+    <div class="tab-item" [class.active]="tab.id === selectedTabId">
+      @if (editingTabId() === tab.id) {
+      <div class="tab-edit-container">
+        <mat-form-field
+          appearance="outline"
+          class="tab-title-field"
+          [class.error]="editTabError()"
+        >
+          <input
+            matInput
+            [(ngModel)]="editingTabTitle"
+            (ngModelChange)="onEditTabTitleChange()"
+            (blur)="saveTabTitle(tab.id)"
+            (keydown)="onKeyDown($event, 'saveEdit', tab.id)"
+            placeholder="Tab title"
+            maxlength="50"
+            #titleInput
+          />
+          @if (editTabError()) {
+          <mat-error>{{ editTabError() }}</mat-error>
+          }
+        </mat-form-field>
+      </div>
+      } @else {
+      <button
+        class="tab-button"
+        [class.active]="tab.id === selectedTabId"
+        (click)="tabSelected.emit(tab.id)"
+      >
+        {{ tab.title }}
+      </button>
+      }
+
+      <div class="tab-controls">
+        @if (editingTabId() !== tab.id) {
+        <button
+          mat-icon-button
+          class="tab-control-btn edit-btn"
+          (click)="editTabTitle(tab.id)"
+          matTooltip="Edit tab title"
+        >
+          <mat-icon>edit</mat-icon>
+        </button>
+        }
+
+        <button
+          mat-icon-button
+          class="tab-control-btn reorder-btn"
+          [disabled]="!canMoveLeft(tab.id)"
+          (click)="reorderTab(tab.id, 'left')"
+          matTooltip="Move left"
+        >
+          <mat-icon>chevron_left</mat-icon>
+        </button>
+
+        <button
+          mat-icon-button
+          class="tab-control-btn reorder-btn"
+          [disabled]="!canMoveRight(tab.id)"
+          (click)="reorderTab(tab.id, 'right')"
+          matTooltip="Move right"
+        >
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+
+        <button
+          mat-icon-button
+          class="tab-control-btn delete-btn"
+          color="warn"
+          (click)="removeTab(tab.id)"
+          matTooltip="Delete tab"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </div>
+    }
+
+    @if (isAddingTab()) {
+    <div class="tab-item add-tab-item">
+      <div class="tab-add-container">
+        <mat-form-field
+          appearance="outline"
+          class="tab-title-field"
+          [class.error]="newTabError()"
+        >
+          <input
+            matInput
+            [(ngModel)]="newTabTitle"
+            (ngModelChange)="onNewTabTitleChange()"
+            (keydown)="onKeyDown($event, 'saveNew')"
+            placeholder="Enter tab title"
+            maxlength="50"
+            #newTabInput
+          />
+          @if (newTabError()) {
+          <mat-error>{{ newTabError() }}</mat-error>
+          }
+        </mat-form-field>
+        <div class="tab-add-actions">
+          <button
+            mat-icon-button
+            color="primary"
+            (click)="saveNewTab()"
+            [disabled]="!isNewTabValid()"
+            matTooltip="Save tab"
+          >
+            <mat-icon>check</mat-icon>
+          </button>
+          <button mat-icon-button (click)="cancelNewTab()" matTooltip="Cancel">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+    } @else {
+    <button class="add-tab-button" mat-stroked-button (click)="addNewTab()">
+      <mat-icon>add</mat-icon>
+      Add Tab
+    </button>
+    }
+  </div>
+</div>
+}

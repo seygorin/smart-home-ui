@@ -51,6 +51,7 @@ export interface DashboardState {
     dashboard: boolean
     devices: boolean
     saving: boolean
+    deviceToggling: Record<string, boolean> 
   }
 
   error: {
@@ -71,6 +72,7 @@ export const initialDashboardState: DashboardState = {
     dashboard: false,
     devices: false,
     saving: false,
+    deviceToggling: {},
   },
   error: {
     dashboard: null,

@@ -10,8 +10,8 @@
   }
 
   <div class="items">
-    @for (item of localItems; track trackById(0, item)) { @switch (item.type) {
-    @case ('device') { @if (isDevice(item)) {
+    @if (localItems.length > 0) { @for (item of localItems; track trackById(0,
+    item)) { @switch (item.type) { @case ('device') { @if (isDevice(item)) {
     <app-device
       [device]="item"
       [isSingle]="card.layout === 'singleDevice'"
@@ -23,6 +23,12 @@
       [sensor]="item"
       [layout]="card.layout === 'horizontalLayout' ? 'horizontal' : 'vertical'"
     ></app-sensor>
-    } } } }
+    } } } } } @else {
+    <div class="empty-state">
+      <mat-icon class="empty-icon">inbox</mat-icon>
+      <p class="empty-message">No devices or sensors</p>
+      <p class="empty-hint">Add entities to this card to get started</p>
+    </div>
+    }
   </div>
 </div>

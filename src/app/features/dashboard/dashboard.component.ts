@@ -18,14 +18,26 @@ import {Subject, combineLatest} from 'rxjs'
 import {takeUntil, switchMap} from 'rxjs/operators'
 import {Store} from '@ngrx/store'
 
-import {Tab, Card, DashboardData, DashboardInfo} from '../../shared/models'
+import {
+  Tab,
+  Card,
+  DashboardData,
+  DashboardInfo,
+  CardLayout,
+} from '../../shared/models'
 import {DashboardService} from '../../core/services/dashboard.service'
+import {DashboardValidationService} from '../../shared/services/dashboard-validation.service'
 import {TabSwitcherComponent} from './tab-switcher/tab-switcher.component'
 import {CardListComponent} from '../../shared/ui/card-list/card-list.component'
 import {
   ConfirmationModalComponent,
   ConfirmationModalData,
 } from '../../shared/ui/confirmation-modal/confirmation-modal.component'
+import {
+  CardContentModalComponent,
+  CardContentModalData,
+  CardContentModalResult,
+} from '../../shared/ui/card-content-modal/card-content-modal.component'
 import {AppState} from '../../store'
 import * as DashboardActions from '../../store/dashboard/dashboard.actions'
 import {
@@ -55,6 +67,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private readonly route = inject(ActivatedRoute)
   private readonly router = inject(Router)
   private readonly dashboardService = inject(DashboardService)
+  private readonly validationService = inject(DashboardValidationService)
   private readonly store = inject(Store<AppState>)
   private readonly dialog = inject(MatDialog)
   private readonly destroy$ = new Subject<void>()
@@ -100,6 +113,34 @@ export class DashboardComponent implements OnInit, OnDestroy {
         setTimeout(() => this.saveError.set(null), 5000)
       }
     })
+
+    this.selectedDashboard$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((dashboard) => {
+        if (dashboard) {
+          this.tabs = dashboard.tabs
+          if (this.selectedTabId) {
+            const currentTab = this.tabs.find(
+              (tab) => tab.id === this.selectedTabId
+            )
+            if (currentTab) {
+              this.selectedCards = currentTab.cards
+            } else {
+              if (this.tabs.length > 0) {
+                const dashboardId =
+                  this.route.snapshot.paramMap.get('dashboardId')
+                if (dashboardId) {
+                  this.router.navigate([
+                    '/dashboard',
+                    dashboardId,
+                    this.tabs[0].id,
+                  ])
+                }
+              }
+            }
+          }
+        }
+      })
 
     this.dashboardService
       .getDashboards()
@@ -349,6 +390,141 @@ export class DashboardComponent implements OnInit, OnDestroy {
       .subscribe((result) => {
         if (result === true) {
           this.store.dispatch(DashboardActions.deleteDashboard({dashboardId}))
+        }
+      })
+  }
+
+  onTabAdded(title: string): void {
+    this.store.dispatch(DashboardActions.addTab({title}))
+
+    const newTabId = this.validationService.generateIdFromTitle(title)
+    const dashboardId = this.route.snapshot.paramMap.get('dashboardId')
+    if (dashboardId) {
+      setTimeout(() => {
+        this.router.navigate(['/dashboard', dashboardId, newTabId])
+      }, 100) 
+    }
+  }
+
+  onTabRemoved(tabId: string): void {
+    const tab = this.tabs.find((t) => t.id === tabId)
+    if (!tab) return
+
+    const confirmationData: ConfirmationModalData = {
+      title: 'Delete Tab',
+      message: `Are you sure you want to delete the tab "${tab.title}"? All cards in this tab will be permanently deleted.`,
+      confirmText: 'Delete',
+      cancelText: 'Cancel',
+      isDestructive: true,
+    }
+
+    const dialogRef = this.dialog.open(ConfirmationModalComponent, {
+      width: '400px',
+      data: confirmationData,
+    })
+
+    dialogRef
+      .afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((result) => {
+        if (result === true) {
+          this.store.dispatch(DashboardActions.removeTab({tabId}))
+        }
+      })
+  }
+
+  onTabReordered(event: {tabId: string; direction: 'left' | 'right'}): void {
+    this.store.dispatch(
+      DashboardActions.reorderTab({
+        tabId: event.tabId,
+        direction: event.direction,
+      })
+    )
+  }
+
+  onTabRenamed(event: {tabId: string; title: string}): void {
+    this.store.dispatch(
+      DashboardActions.updateTabTitle({
+        tabId: event.tabId,
+        title: event.title,
+      })
+    )
+  }
+
+  onCardAdded(layout: CardLayout): void {
+    if (this.selectedTabId) {
+      this.store.dispatch(
+        DashboardActions.addCard({
+          tabId: this.selectedTabId,
+          layout,
+        })
+      )
+    }
+  }
+
+  onCardRemoved(cardId: string): void {
+    if (this.selectedTabId) {
+      this.store.dispatch(
+        DashboardActions.removeCard({
+          tabId: this.selectedTabId,
+          cardId,
+        })
+      )
+    }
+  }
+
+  onCardReordered(event: {cardId: string; newIndex: number}): void {
+    if (this.selectedTabId) {
+      this.store.dispatch(
+        DashboardActions.reorderCard({
+          tabId: this.selectedTabId,
+          cardId: event.cardId,
+          newIndex: event.newIndex,
+        })
+      )
+    }
+  }
+
+  onCardContentEdited(cardId: string): void {
+    if (!this.selectedTabId) return
+
+    const card = this.selectedCards.find((c) => c.id === cardId)
+    if (!card) return
+
+    const modalData: CardContentModalData = {
+      card,
+      tabId: this.selectedTabId,
+    }
+
+    const dialogRef = this.dialog.open(CardContentModalComponent, {
+      width: '600px',
+      maxWidth: '90vw',
+      disableClose: false,
+      data: modalData,
+    })
+
+    dialogRef
+      .afterClosed()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((result: CardContentModalResult | undefined) => {
+        if (result) {
+          if (result.title !== card.title) {
+            this.store.dispatch(
+              DashboardActions.updateCardTitle({
+                tabId: this.selectedTabId,
+                cardId,
+                title: result.title || '',
+              })
+            )
+          }
+
+          this.store.dispatch(
+            DashboardActions.replaceCardItems({
+              tabId: this.selectedTabId,
+              cardId,
+              items: result.items,
+            })
+          )
         }
       })
   }

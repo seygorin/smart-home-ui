@@ -94,6 +94,11 @@ export const removeItemFromCard = createAction(
   props<{tabId: string; cardId: string; itemId: string}>()
 )
 
+export const replaceCardItems = createAction(
+  '[Dashboard] Replace Card Items',
+  props<{tabId: string; cardId: string; items: CardItem[]}>()
+)
+
 export const loadDevices = createAction('[Dashboard] Load Devices')
 
 export const loadDevicesSuccess = createAction(

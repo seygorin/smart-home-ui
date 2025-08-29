@@ -1,6 +1,7 @@
 import {Injectable, inject} from '@angular/core'
 import {Actions, createEffect, ofType} from '@ngrx/effects'
 import {Router} from '@angular/router'
+import {MatSnackBar} from '@angular/material/snack-bar'
 import {of} from 'rxjs'
 import {map, catchError, switchMap, tap} from 'rxjs/operators'
 
@@ -12,6 +13,7 @@ export class DashboardEffects {
   private actions$ = inject(Actions)
   private dashboardService = inject(DashboardService)
   private router = inject(Router)
+  private snackBar = inject(MatSnackBar)
 
   loadDashboard$ = createEffect(() =>
     this.actions$.pipe(
@@ -130,6 +132,30 @@ export class DashboardEffects {
         )
       )
     )
+  )
+
+  toggleDeviceStateSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(DashboardActions.toggleDeviceStateSuccess),
+        tap(() => {
+        })
+      ),
+    {dispatch: false}
+  )
+
+  toggleDeviceStateFailure$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(DashboardActions.toggleDeviceStateFailure),
+        tap(({error}) => {
+          this.snackBar.open(`Failed to update device: ${error}`, 'Dismiss', {
+            duration: 5000,
+            panelClass: ['error-snackbar'],
+          })
+        })
+      ),
+    {dispatch: false}
   )
 
   createDashboardSuccess$ = createEffect(

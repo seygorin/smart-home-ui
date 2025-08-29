@@ -66,7 +66,18 @@
     [selectedTabId]="selectedTabId"
     [editMode]="isEditMode()"
     (tabSelected)="onTabSelected($event)"
+    (tabAdded)="onTabAdded($event)"
+    (tabRemoved)="onTabRemoved($event)"
+    (tabReordered)="onTabReordered($event)"
+    (tabRenamed)="onTabRenamed($event)"
   ></app-tab-switcher>
-  <app-card-list [cards]="selectedCards" [editMode]="isEditMode()">
+  <app-card-list
+    [cards]="selectedCards"
+    [editMode]="isEditMode()"
+    (cardAdded)="onCardAdded($event)"
+    (cardRemoved)="onCardRemoved($event)"
+    (cardReordered)="onCardReordered($event)"
+    (cardContentEdited)="onCardContentEdited($event)"
+  >
   </app-card-list>
 </div>

@@ -22,13 +22,13 @@
 
 @mixin component-label {
   font-size: 14px;
-  color: var(--color-text-secondary);
+  color: var(--color-text-secondary) !important;
 }
 
 @mixin component-value {
   font-size: 18px;
   font-weight: 500;
-  color: var(--color-text-primary);
+  color: var(--color-text-primary) !important;
 }
 
 @mixin vertical-layout {

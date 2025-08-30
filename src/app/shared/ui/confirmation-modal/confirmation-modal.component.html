@@ -1,0 +1,21 @@
+<h2 mat-dialog-title class="dialog-title">
+  <mat-icon *ngIf="data.isDestructive" class="warning-icon">warning</mat-icon>
+  {{ data.title }}
+</h2>
+
+<mat-dialog-content class="dialog-content">
+  <p>{{ data.message }}</p>
+</mat-dialog-content>
+
+<mat-dialog-actions class="dialog-actions">
+  <button mat-button (click)="onCancel()">
+    {{ data.cancelText || 'Cancel' }}
+  </button>
+  <button
+    mat-raised-button
+    [color]="data.isDestructive ? 'warn' : 'primary'"
+    (click)="onConfirm()"
+  >
+    {{ data.confirmText || 'Confirm' }}
+  </button>
+</mat-dialog-actions>

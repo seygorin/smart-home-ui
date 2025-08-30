@@ -30,7 +30,7 @@ export class TokenService {
 
   setToken(token: string): void {
     try {
-      if (!token || typeof token !== 'string' || token.trim().length === 0) {
+      if (!this.isValidToken(token)) {
         throw new Error('Invalid token provided')
       }
 

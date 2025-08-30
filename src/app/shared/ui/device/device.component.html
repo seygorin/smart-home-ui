@@ -1,14 +1,22 @@
 <div
   class="device"
   [class.active]="device.state"
+  [class.loading]="isLoading()"
   [appActiveHighlight]="device.state"
 >
-  <mat-icon [color]="getIconColor()" (click)="isSingle ? onToggle() : null">{{
-    device.icon
-  }}</mat-icon>
+  <div class="device-icon-container">
+    @if (isLoading()) {
+    <mat-spinner diameter="20"></mat-spinner>
+    } @else {
+    <mat-icon [color]="getIconColor()" (click)="isSingle ? onToggle() : null">{{
+      device.icon
+    }}</mat-icon>
+    }
+  </div>
   <span>{{ device.label }}</span>
   <mat-slide-toggle
     [checked]="device.state"
+    [disabled]="isLoading()"
     (change)="onToggle($event.checked)"
   >
   </mat-slide-toggle>

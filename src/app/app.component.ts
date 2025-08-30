@@ -6,7 +6,9 @@ import {MatIconModule} from '@angular/material/icon'
 import {MatButtonModule} from '@angular/material/button'
 
 import {SidebarComponent} from './core/layout/sidebar/sidebar.component'
+import {GlobalLoadingComponent} from './shared/ui/global-loading/global-loading.component'
 import {AuthService} from './core/services/auth.service'
+import {NavigationService} from './core/services/navigation.service'
 
 interface DashboardSelectedEvent {
   dashboardId: string
@@ -20,6 +22,7 @@ interface DashboardSelectedEvent {
     CommonModule,
     RouterOutlet,
     SidebarComponent,
+    GlobalLoadingComponent,
     MatSidenavModule,
     MatIconModule,
     MatButtonModule,
@@ -30,6 +33,7 @@ interface DashboardSelectedEvent {
 export class AppComponent implements OnInit {
   private readonly authService = inject(AuthService)
   private readonly router = inject(Router)
+  private readonly navigationService = inject(NavigationService)
 
   @ViewChild('sidenav') sidenav!: MatSidenav
 
@@ -87,19 +91,15 @@ export class AppComponent implements OnInit {
     if (this.isMobile) {
       if (this.isCollapsed) {
         this.sidenav.open()
-        this.isCollapsed = false
       } else {
         this.sidenav.close()
-        this.isCollapsed = true
       }
-    } else {
-      this.isCollapsed = !this.isCollapsed
     }
+    this.isCollapsed = !this.isCollapsed
   }
 
   onTabSelected(dashboardId: string): void {
-
-    this.router.navigate(['/dashboard', dashboardId])
+    this.navigationService.navigateToNewDashboard(dashboardId)
 
     if (this.isMobile && this.sidenav.opened) {
       this.sidenav.close()
@@ -115,9 +115,9 @@ export class AppComponent implements OnInit {
 
   onDashboardSelected(event: DashboardSelectedEvent): void {
     if (event.tabId) {
-      this.router.navigate(['/dashboard', event.dashboardId, event.tabId])
+      this.navigationService.navigateToDashboard(event.dashboardId, event.tabId)
     } else {
-      this.router.navigate(['/dashboard', event.dashboardId])
+      this.navigationService.navigateToNewDashboard(event.dashboardId)
     }
 
     if (this.isMobile && this.sidenav.opened) {

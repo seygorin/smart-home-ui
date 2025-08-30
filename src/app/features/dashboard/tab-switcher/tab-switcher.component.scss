@@ -1,0 +1,211 @@
+.tab-switcher-edit {
+  .tabs-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--mat-divider-color);
+    flex-wrap: wrap;
+  }
+
+  .tab-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border: 1px solid var(--mat-divider-color);
+    border-radius: 8px;
+    background: var(--mat-surface-container);
+    transition: all 0.2s ease;
+
+    &.active {
+      background: var(--mat-primary-container);
+      border-color: var(--mat-primary);
+      color: var(--mat-on-primary-container);
+    }
+
+    &:hover {
+      background: var(--mat-surface-container-high);
+    }
+
+    &.add-tab-item {
+      background: var(--mat-surface-container-low);
+      border-style: dashed;
+    }
+  }
+
+  .tab-button {
+    background: none;
+    border: none;
+    padding: 4px 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: inherit;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background: var(--mat-surface-container-highest);
+    }
+
+    &.active {
+      color: var(--mat-primary);
+      font-weight: 600;
+    }
+  }
+
+  .tab-controls {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: auto;
+  }
+
+  .tab-control-btn {
+    width: 32px;
+    height: 32px;
+
+    .mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+
+    &.edit-btn {
+      color: var(--mat-primary);
+    }
+
+    &.reorder-btn {
+      color: var(--mat-on-surface-variant);
+
+      &:disabled {
+        color: var(--mat-on-surface-disabled);
+      }
+    }
+
+    &.delete-btn {
+      color: var(--mat-error);
+    }
+  }
+
+  .tab-edit-container,
+  .tab-add-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+  }
+
+  .tab-title-field {
+    flex: 1;
+    min-width: 120px;
+
+    .mat-mdc-form-field-wrapper {
+      padding-bottom: 0;
+    }
+
+    .mat-mdc-text-field-wrapper {
+      height: 40px;
+    }
+
+    .mat-mdc-form-field-infix {
+      padding: 8px 0;
+      min-height: auto;
+    }
+
+    input {
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    &.error {
+      .mat-mdc-text-field-wrapper {
+        border-color: var(--mat-error);
+      }
+    }
+
+    .mat-mdc-form-field-error {
+      font-size: 12px;
+      margin-top: 4px;
+      color: var(--mat-error);
+    }
+  }
+
+  .tab-add-actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .add-tab-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 8px;
+    border: 1px dashed var(--mat-primary);
+    color: var(--mat-primary);
+    background: transparent;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: var(--mat-primary-container);
+      border-style: solid;
+    }
+
+    .mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .tab-switcher-edit {
+    .tabs-container {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .tab-item {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 12px;
+    }
+
+    .tab-controls {
+      margin-left: 0;
+      justify-content: center;
+    }
+
+    .tab-title-field {
+      min-width: auto;
+    }
+  }
+}
+
+.tab-control-btn:focus,
+.tab-button:focus,
+.add-tab-button:focus {
+  outline: 2px solid var(--mat-primary);
+  outline-offset: 2px;
+}
+
+.tab-item {
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

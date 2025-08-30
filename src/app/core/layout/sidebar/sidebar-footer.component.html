@@ -1,4 +1,20 @@
 <div class="sidebar-footer" [class.collapsed]="isCollapsed">
+  <div class="dashboard-actions">
+    <button
+      mat-raised-button
+      color="primary"
+      class="add-dashboard-button"
+      (click)="onAddDashboard()"
+      [attr.aria-label]="'Add new dashboard'"
+      [class.icon-only]="isCollapsed"
+    >
+      <mat-icon>add</mat-icon>
+      @if (!isCollapsed) {
+      <span>Add Dashboard</span>
+      }
+    </button>
+  </div>
+
   @if (userProfile) {
   <div class="user-profile">
     <div class="avatar">

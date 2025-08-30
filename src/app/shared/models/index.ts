@@ -30,12 +30,13 @@ export interface Tab {
 
 export interface Card {
   id: string
-  title: string
+  title?: string 
   layout: 'singleDevice' | 'horizontalLayout' | 'verticalLayout'
   items: CardItem[]
 }
 
 export interface DeviceItem {
+  id: string
   type: 'device'
   icon: string
   label: string
@@ -43,6 +44,7 @@ export interface DeviceItem {
 }
 
 export interface SensorItem {
+  id: string
   type: 'sensor'
   icon: string
   label: string
@@ -70,14 +72,44 @@ export interface CardItemBase {
 }
 
 export interface Sensor extends CardItemBase {
+  id: string
   type: 'sensor'
   value: SensorValue
 }
 
 export interface Device extends CardItemBase {
+  id: string
   type: 'device'
   state: boolean
 }
 
 export type SensorLegacy = Sensor
 export type DeviceLegacy = Device
+
+export type CardLayout = 'singleDevice' | 'horizontalLayout' | 'verticalLayout'
+
+export interface CreateDashboardRequest {
+  id: string
+  title: string
+  icon: string
+}
+
+export interface DashboardFormData {
+  id: string
+  title: string
+  icon: string
+}
+
+export interface TabFormData {
+  title: string
+}
+
+export interface ValidationResult {
+  isValid: boolean
+  errors: ValidationError[]
+}
+
+export interface ValidationError {
+  field: string
+  message: string
+}

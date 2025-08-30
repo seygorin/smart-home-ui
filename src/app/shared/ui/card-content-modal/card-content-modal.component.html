@@ -1,0 +1,134 @@
+<h2 mat-dialog-title>Edit Card Content</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="cardForm" class="card-content-form">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Card Title (Optional)</mat-label>
+      <input
+        matInput
+        formControlName="title"
+        placeholder="Enter card title"
+        maxlength="50"
+      />
+      <mat-hint align="end"
+        >{{ cardForm.get('title')?.value?.length || 0 }}/50</mat-hint
+      >
+      <mat-error *ngIf="cardForm.get('title')?.hasError('maxlength')">
+        Title must be 50 characters or less
+      </mat-error>
+    </mat-form-field>
+
+    <mat-divider></mat-divider>
+
+    <div class="current-items-section">
+      <h3 class="section-title">
+        <mat-icon>list</mat-icon>
+        Current Items
+        <span class="item-count">({{ cardItems().length }})</span>
+      </h3>
+
+      @if (hasItems()) {
+      <mat-list class="items-list">
+        @for (item of cardItems(); track $index) {
+        <mat-list-item class="item-entry">
+          <div class="item-content">
+            <div class="item-info">
+              <mat-icon class="item-icon">{{ getEntityIcon(item) }}</mat-icon>
+              <div class="item-details">
+                <div class="item-label">{{ getEntityLabel(item) }}</div>
+                <div class="item-meta">
+                  <span class="item-type">{{ getEntityType(item) }}</span>
+                  <span class="item-value">{{ getEntityValue(item) }}</span>
+                </div>
+              </div>
+            </div>
+            <button
+              mat-icon-button
+              color="warn"
+              (click)="onRemoveEntity(item.id, $index)"
+              type="button"
+              class="remove-button"
+              [attr.aria-label]="'Remove ' + getEntityLabel(item)"
+            >
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        </mat-list-item>
+        @if (!$last) {
+        <mat-divider></mat-divider>
+        } }
+      </mat-list>
+      } @else {
+      <div class="empty-state">
+        <mat-icon class="empty-icon">inbox</mat-icon>
+        <p class="empty-message">No devices or sensors added yet</p>
+        <p class="empty-hint">
+          Use the dropdown below to add entities to this card
+        </p>
+      </div>
+      }
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <div class="add-entity-section">
+      <h3 class="section-title">
+        <mat-icon>add</mat-icon>
+        Add Entity
+      </h3>
+
+      <div class="add-entity-controls">
+        <mat-form-field appearance="outline" class="entity-select">
+          <mat-label>Select an Entity</mat-label>
+          <mat-select formControlName="selectedEntity">
+            <mat-option value="">-- Select a device or sensor --</mat-option>
+            @for (device of availableDevices$ | async; track device.id) {
+            <mat-option [value]="device.id">
+              <div class="entity-option">
+                <mat-icon class="option-icon">{{ device.icon }}</mat-icon>
+                <div class="option-details">
+                  <span class="option-label">{{ device.label }}</span>
+                  <span class="option-type">{{
+                    device.type === 'device' ? 'Device' : 'Sensor'
+                  }}</span>
+                </div>
+              </div>
+            </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="onAddEntity()"
+          type="button"
+          [disabled]="!cardForm.get('selectedEntity')?.value"
+          class="add-button"
+        >
+          <mat-icon>add</mat-icon>
+          Add
+        </button>
+      </div>
+
+      <p class="add-hint">
+        <mat-icon class="hint-icon">info</mat-icon>
+        You can add the same entity multiple times if needed
+      </p>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()" type="button">Cancel</button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="onSave()"
+    type="button"
+    [disabled]="!isFormValid()"
+  >
+    <mat-icon>save</mat-icon>
+    Save Changes
+  </button>
+</mat-dialog-actions>

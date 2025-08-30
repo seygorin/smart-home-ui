@@ -1,11 +1,47 @@
 @use '../../../shared/styles/forward' as *;
 
 .sidebar-footer {
-  @include flex-row(flex-start, center, 12px);
+  @include flex-column(flex-start, stretch, var(--spacing-md));
   padding: var(--spacing-md);
   transition: all var(--transition-normal);
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   margin-top: auto;
+
+  .dashboard-actions {
+    @include flex-row(center, center);
+    width: 100%;
+    margin-bottom: var(--spacing-sm);
+
+    .add-dashboard-button {
+      @include flex-row(center, center, var(--spacing-xs));
+      width: 100%;
+      min-height: 40px;
+      font-weight: 500;
+      transition: all var(--transition-fast);
+
+      &.icon-only {
+        width: 40px;
+        min-width: 40px;
+        padding: 0;
+        border-radius: 50%;
+
+        span {
+          display: none;
+        }
+      }
+
+      mat-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+      }
+
+      &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+    }
+  }
 
   .user-profile,
   .loading-profile {

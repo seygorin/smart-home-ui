@@ -1,3 +1,88 @@
-@for (card of cards; track card.id) {
-<app-card [card]="card"></app-card>
+@if (loading) {
+<app-loading-state
+  message="Loading cards..."
+  cssClass="compact"
+></app-loading-state>
+} @else if (cards.length > 0) { @for (card of cards; track card.id) {
+<div class="card-wrapper" [class.edit-mode]="editMode">
+  <app-card [card]="card"></app-card>
+
+  @if (editMode) {
+  <div class="card-controls">
+    <div class="card-controls-top">
+      <button
+        mat-icon-button
+        class="card-menu-button"
+        [matMenuTriggerFor]="cardMenu"
+        aria-label="Card options"
+      >
+        <mat-icon>more_vert</mat-icon>
+      </button>
+
+      <mat-menu #cardMenu="matMenu">
+        <button mat-menu-item (click)="onEditCardContent(card.id)">
+          <mat-icon>edit</mat-icon>
+          <span>Edit Content</span>
+        </button>
+        <button
+          mat-menu-item
+          (click)="onRemoveCard(card.id)"
+          class="delete-option"
+        >
+          <mat-icon>delete</mat-icon>
+          <span>Delete Card</span>
+        </button>
+      </mat-menu>
+    </div>
+
+    <div class="card-controls-bottom">
+      <div class="reorder-controls">
+        <button
+          mat-icon-button
+          class="reorder-button"
+          [disabled]="!canMoveUp(card.id)"
+          (click)="onReorderCard(card.id, 'up')"
+          aria-label="Move card up"
+        >
+          <mat-icon>keyboard_arrow_up</mat-icon>
+        </button>
+
+        <span class="card-position">{{ getCardPosition(card.id) }}</span>
+
+        <button
+          mat-icon-button
+          class="reorder-button"
+          [disabled]="!canMoveDown(card.id)"
+          (click)="onReorderCard(card.id, 'down')"
+          aria-label="Move card down"
+        >
+          <mat-icon>keyboard_arrow_down</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+  }
+</div>
+} } @else {
+<app-empty-state
+  icon="dashboard"
+  title="No Cards Yet"
+  message="This tab doesn't have any cards. Add your first card to start organizing your devices and sensors."
+  [actionText]="editMode ? 'Add Card' : ''"
+  actionIcon="add"
+  [showAction]="editMode"
+  (action)="onAddCard()"
+></app-empty-state>
+} @if (editMode) {
+<div class="add-card-container">
+  <button
+    mat-raised-button
+    color="primary"
+    class="add-card-button"
+    (click)="onAddCard()"
+  >
+    <mat-icon>add</mat-icon>
+    Add Card
+  </button>
+</div>
 }

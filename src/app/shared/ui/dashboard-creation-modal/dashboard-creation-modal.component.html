@@ -1,0 +1,69 @@
+<h2 mat-dialog-title>Create New Dashboard</h2>
+
+<mat-dialog-content>
+  <form [formGroup]="dashboardForm" class="dashboard-form">
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Dashboard ID</mat-label>
+      <input
+        matInput
+        formControlName="id"
+        maxlength="30"
+        placeholder="e.g., living-room, bedroom-1"
+        autocomplete="off"
+      />
+      <mat-hint
+        >Used in URLs. Only letters, numbers, hyphens, and underscores
+        allowed.</mat-hint
+      >
+      @if (hasFieldError('id')) {
+      <mat-error>{{ getFieldError('id') }}</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Title</mat-label>
+      <input
+        matInput
+        formControlName="title"
+        maxlength="50"
+        placeholder="e.g., Living Room, Master Bedroom"
+        autocomplete="off"
+      />
+      <mat-hint>Display name for your dashboard</mat-hint>
+      @if (hasFieldError('title')) {
+      <mat-error>{{ getFieldError('title') }}</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Icon</mat-label>
+      <mat-select formControlName="icon" placeholder="Choose an icon">
+        @for (option of iconOptions; track option.value) {
+        <mat-option [value]="option.value">
+          <div class="icon-option">
+            <mat-icon>{{ option.icon }}</mat-icon>
+            <span>{{ option.label }}</span>
+          </div>
+        </mat-option>
+        }
+      </mat-select>
+      @if (hasFieldError('icon')) {
+      <mat-error>{{ getFieldError('icon') }}</mat-error>
+      }
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()" type="button">Cancel</button>
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="onCreate()"
+    type="button"
+    [disabled]="dashboardForm.invalid"
+  >
+    <mat-icon>add</mat-icon>
+    Create Dashboard
+  </button>
+</mat-dialog-actions>

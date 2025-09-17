@@ -1,19 +1,96 @@
-<div *ngIf="loading" class="loading-container">
-  <mat-spinner diameter="40"></mat-spinner>
-  <p>Loading dashboard...</p>
-</div>
+<app-loading-state
+  *ngIf="loading"
+  message="Loading dashboard..."
+  [diameter]="40"
+></app-loading-state>
 
-<div *ngIf="error && !loading" class="error-container">
-  <mat-icon>error_outline</mat-icon>
-  <p>{{ error }}</p>
-  <button mat-raised-button color="primary" (click)="retryLoad()">Retry</button>
-</div>
+<app-error-state
+  *ngIf="error && !loading"
+  title="Failed to Load Dashboard"
+  [message]="error"
+  (retry)="retryLoad()"
+></app-error-state>
 
 <div *ngIf="!loading && !error" class="dashboard-content">
+  <mat-toolbar class="dashboard-toolbar">
+    <div class="dashboard-info">
+      <mat-icon *ngIf="dashboardInfo?.icon">{{ dashboardInfo?.icon }}</mat-icon>
+      <h1>{{ dashboardInfo?.title }}</h1>
+    </div>
+
+    <div class="toolbar-actions">
+      <ng-container *ngIf="!isEditMode(); else editModeActions">
+        <button mat-button (click)="enterEditMode()">
+          <mat-icon>edit</mat-icon>
+          Edit
+        </button>
+        <button mat-button color="warn" (click)="deleteDashboard()">
+          <mat-icon>delete</mat-icon>
+          Delete
+        </button>
+      </ng-container>
+
+      <ng-template #editModeActions>
+        <button
+          mat-button
+          (click)="saveDashboard()"
+          [disabled]="!canSave()"
+          color="primary"
+        >
+          <mat-icon *ngIf="!isSaving()">save</mat-icon>
+          <mat-spinner *ngIf="isSaving()" diameter="16"></mat-spinner>
+          {{ isSaving() ? 'Saving...' : 'Save' }}
+        </button>
+        <button
+          mat-button
+          (click)="discardChanges()"
+          [disabled]="!canDiscard()"
+        >
+          <mat-icon>cancel</mat-icon>
+          Discard
+        </button>
+      </ng-template>
+    </div>
+  </mat-toolbar>
+
+  <div *ngIf="saveSuccess()" class="feedback-message success-message">
+    <mat-icon>check_circle</mat-icon>
+    <span>Dashboard saved successfully!</span>
+  </div>
+
+  <div *ngIf="saveError()" class="feedback-message error-message">
+    <mat-icon>error</mat-icon>
+    <span>{{ saveError() }}</span>
+  </div>
+
+  @if (tabs.length > 0) {
   <app-tab-switcher
     [tabs]="tabs"
     [selectedTabId]="selectedTabId"
+    [editMode]="isEditMode()"
     (tabSelected)="onTabSelected($event)"
+    (tabAdded)="onTabAdded($event)"
+    (tabRemoved)="onTabRemoved($event)"
+    (tabReordered)="onTabReordered($event)"
+    (tabRenamed)="onTabRenamed($event)"
   ></app-tab-switcher>
-  <app-card-list [cards]="selectedCards"></app-card-list>
+  <app-card-list
+    [cards]="selectedCards"
+    [editMode]="isEditMode()"
+    (cardAdded)="onCardAdded($event)"
+    (cardRemoved)="onCardRemoved($event)"
+    (cardReordered)="onCardReordered($event)"
+    (cardContentEdited)="onCardContentEdited($event)"
+  >
+  </app-card-list>
+  } @else {
+  <app-empty-state
+    icon="tab"
+    title="No Tabs Available"
+    message="This dashboard doesn't have any tabs yet. Add your first tab to start organizing your smart home devices."
+    [actionText]="isEditMode() ? 'Add Tab' : 'Enter Edit Mode'"
+    [actionIcon]="isEditMode() ? 'add' : 'edit'"
+    (action)="isEditMode() ? onTabAdded('New Tab') : enterEditMode()"
+  ></app-empty-state>
+  }
 </div>

@@ -1,5 +1,6 @@
 import {Routes} from '@angular/router'
 import {authGuard} from './core/guards/auth.guard'
+import {editModeGuard} from './core/guards/edit-mode.guard'
 
 export const routes: Routes = [
   {
@@ -17,6 +18,7 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     canActivate: [authGuard],
+    canDeactivate: [editModeGuard],
     children: [
       {
         path: '',
@@ -24,6 +26,7 @@ export const routes: Routes = [
           import('./features/dashboard/dashboard.component').then(
             (m) => m.DashboardComponent
           ),
+        canDeactivate: [editModeGuard],
       },
       {
         path: ':dashboardId',
@@ -31,6 +34,7 @@ export const routes: Routes = [
           import('./features/dashboard/dashboard.component').then(
             (m) => m.DashboardComponent
           ),
+        canDeactivate: [editModeGuard],
       },
       {
         path: ':dashboardId/:tabId',
@@ -38,6 +42,7 @@ export const routes: Routes = [
           import('./features/dashboard/dashboard.component').then(
             (m) => m.DashboardComponent
           ),
+        canDeactivate: [editModeGuard],
       },
     ],
   },

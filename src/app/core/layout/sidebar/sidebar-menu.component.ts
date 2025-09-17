@@ -21,7 +21,7 @@ export class SidebarMenuComponent {
   @Output() menuItemClick = new EventEmitter<string>()
   @Input() activeItem = ''
   @Input() isCollapsed = false
-  @Input() dashboards: DashboardInfo[] = []
+  @Input() dashboards: Array<DashboardInfo & {isActive?: boolean}> = []
   @Input() isLoading = false
 
   selectMenuItem(id: string): void {

@@ -1,0 +1,70 @@
+@use '../../../shared/styles/forward' as *;
+
+.dashboard-form {
+  @include flex-column(flex-start, stretch, var(--spacing-lg));
+  min-width: 400px;
+  padding: var(--spacing-md) 0;
+
+  .form-field {
+    width: 100%;
+  }
+}
+
+.icon-option {
+  @include flex-row(flex-start, center, var(--spacing-sm));
+
+  mat-icon {
+    color: var(--color-text-secondary);
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  span {
+    color: var(--color-text-primary);
+  }
+}
+
+:host ::ng-deep {
+  .mat-mdc-dialog-title {
+    color: var(--color-text-primary);
+    font-weight: 600;
+    margin-bottom: var(--spacing-md);
+  }
+
+  .mat-mdc-dialog-content {
+    padding: 0 var(--spacing-lg);
+    max-height: none;
+  }
+
+  .mat-mdc-dialog-actions {
+    padding: var(--spacing-md) var(--spacing-lg);
+    gap: var(--spacing-sm);
+
+    button {
+      min-width: 100px;
+    }
+  }
+
+  .mat-mdc-form-field {
+    .mat-mdc-form-field-subscript-wrapper {
+      margin-top: var(--spacing-xs);
+    }
+
+    .mat-mdc-form-field-hint {
+      color: var(--color-text-secondary);
+      font-size: 12px;
+    }
+
+    .mat-mdc-form-field-error {
+      color: var(--color-error);
+      font-size: 12px;
+    }
+  }
+
+  .mat-mdc-select-panel {
+    .mat-mdc-option {
+      padding: var(--spacing-sm) var(--spacing-md);
+    }
+  }
+}
